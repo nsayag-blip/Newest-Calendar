@@ -1,4 +1,4 @@
-// src/components/layout/DateNavigator.tsx
+// src/components/header/DateNavigator.tsx
 import { useState, useCallback } from "react";
 import { useCalendarStore } from "../../store/appStore";
 import {

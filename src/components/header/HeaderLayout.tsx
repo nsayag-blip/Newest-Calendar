@@ -1,6 +1,6 @@
-// src/components/layout/HeaderLayout.tsx
+// src/components/header/HeaderLayout.tsx
 import { useCalendarStore } from "../../store/appStore";
-import GlobalContextBar from "./GlobalContextBar";
+import TopBar from "./TopBar";
 import ActionBar from "./ActionBar";
 import FilterTray from "./FilterTray";
 
@@ -11,7 +11,7 @@ export default function HeaderLayout() {
 
   return (
     <header className="sticky top-0 z-[var(--z-sticky)] flex flex-col bg-white border-b border-border shadow-sm">
-      <GlobalContextBar />
+      <TopBar />
       <ActionBar />
       {showTray && <FilterTray />}
     </header>

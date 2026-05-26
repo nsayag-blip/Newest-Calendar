@@ -1,4 +1,4 @@
-// src/components/layout/ClinicDropdown.tsx
+// src/components/header/ClinicDropdown.tsx
 import { useCalendarStore } from "../../store/appStore";
 import { useClinics } from "../../hooks/useScheduling";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/Popover";

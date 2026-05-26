@@ -21,7 +21,6 @@
     "react": "^19.2.5",
     "react-day-picker": "^10.0.1",
     "react-dom": "^19.2.5",
-    "react-jewish-datepicker": "^2.0.24",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
