@@ -1,0 +1,191 @@
+/*@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f8fafc; 
+  border-radius: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; 
+  border-radius: 6px;
+  border: 2px solid #f8fafc; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;  Darkens on hover
+} */
+
+
+
+
+
+
+
+@import "tailwindcss";
+
+/* ============================================================
+   DESIGN TOKENS — SLDS-inspired, custom-owned
+   All UI components pull from these variables only.
+   To retheme the entire app: change values here, nowhere else.
+   ============================================================ */
+
+@theme {
+  /* ── Brand / Primary ───────────────────────────────────── */
+  --color-brand: #0070D2;
+  --color-brand-hover: #005FB2;
+  --color-brand-active: #005099;
+  --color-brand-subtle: #EAF4FF;
+  --color-brand-border: #A8D4F5;
+
+  /* ── Neutrals ──────────────────────────────────────────── */
+  --color-page-bg: #F3F2F2;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #FAFAF9;
+  --color-border: #DDDBDA;
+  --color-border-strong: #C9C7C5;
+
+  /* ── Text ──────────────────────────────────────────────── */
+  --color-text-primary: #3E3E3C;
+  --color-text-secondary: #706E6B;
+  --color-text-muted: #A8A8A8;
+  --color-text-inverse: #FFFFFF;
+  --color-text-brand: #0070D2;
+
+  /* ── Semantic: Status colors (calendar blocks) ─────────── */
+  --color-status-active-bg: #FFFDE7;
+  --color-status-active-border: #F9A825;
+  --color-status-cancelled-bg: #FFEBEE;
+  --color-status-cancelled-border: #E53935;
+  --color-status-holiday-bg: #E3F2FD;
+  --color-status-holiday-border: #1E88E5;
+  --color-status-admin-bg: #212121;
+  --color-status-admin-border: #000000;
+  --color-status-standby-bg: #F3E5F5;
+  --color-status-standby-border: #8E24AA;
+
+  /* ── Appointment status colors ─────────────────────────── */
+  --color-appt-active: #C8E6C9;
+  --color-appt-exam: #DCEDC8;
+  --color-appt-lab: #B3E5FC;
+  --color-appt-cancelled: #FFCDD2;
+  --color-appt-blocker: #EF9A9A;
+  --color-appt-standby: #E1BEE7;
+
+  /* ── Destructive ───────────────────────────────────────── */
+  --color-destructive: #C23934;
+  --color-destructive-hover: #A61C17;
+  --color-destructive-subtle: #FEF0EF;
+
+  /* ── Success ───────────────────────────────────────────── */
+  --color-success: #2E7D32;
+  --color-success-subtle: #E8F5E9;
+
+  /* ── Typography ────────────────────────────────────────── */
+  --font-sans: "Salesforce Sans", "Noto Sans Hebrew", system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  /* 12px — labels, captions */
+  --text-sm: 0.8125rem;
+  /* 13px — body, table cells */
+  --text-base: 0.875rem;
+  /* 14px — buttons, inputs */
+  --text-lg: 1rem;
+  /* 16px — section headings */
+  --text-xl: 1.25rem;
+  /* 20px — page headings */
+
+  /* ── Spacing scale (matches SLDS 4px base) ─────────────── */
+  --spacing-1: 0.25rem;
+  /* 4px  */
+  --spacing-2: 0.5rem;
+  /* 8px  */
+  --spacing-3: 0.75rem;
+  /* 12px */
+  --spacing-4: 1rem;
+  /* 16px */
+  --spacing-5: 1.25rem;
+  /* 20px */
+  --spacing-6: 1.5rem;
+  /* 24px */
+
+  /* ── Radii ──────────────────────────────────────────────── */
+  --radius-sm: 0.25rem;
+  /* 4px  — buttons, inputs, dropdowns */
+  --radius-md: 0.5rem;
+  /* 8px  — cards, panels */
+  --radius-lg: 0.75rem;
+  /* 12px — popovers, modals */
+  --radius-full: 9999px;
+  /* pill — mode toggle, badges */
+
+  /* ── Shadows ────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.10);
+  --shadow-md: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px 0 rgba(0, 0, 0, 0.14);
+  --shadow-popover: 0 4px 16px 0 rgba(0, 0, 0, 0.16);
+
+  /* ── Z-index scale ──────────────────────────────────────── */
+  --z-dropdown: 50;
+  --z-sticky: 40;
+  --z-popover: 100;
+  --z-modal: 200;
+  --z-toast: 300;
+}
+
+/* ============================================================
+   BASE RESETS
+   ============================================================ */
+
+@layer base {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background-color: var(--color-page-bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* RTL default for this app */
+  /* body {
+    direction: rtl;
+  } */
+}
+
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-surface-alt);
+  border-radius: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-strong);
+  border-radius: 6px;
+  border: 2px solid var(--color-surface-alt);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-muted);
+}
