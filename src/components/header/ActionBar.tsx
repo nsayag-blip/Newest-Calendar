@@ -25,12 +25,12 @@ export default function ActionBar() {
   const primaryActionText = appMode === "shift" ? "יצירת משמרת" : "קביעת תור";
 
   return (
-    <div className="flex items-center justify-between px-6 pt-2 pb-1 bg-white border-b border-border">
+    <div className="flex items-center justify-between px-6 h-12 bg-white border-b border-border">
       <div className="flex items-center h-full gap-4">
         <div className="flex h-full">
           <button
             onClick={() => setViewType("day")}
-            className={`flex items-center gap-2 h-full px-4 text-[15px] font-bold border-b-[3px] transition-colors pt-0.5 ${
+            className={` relative -mb-px flex items-center gap-2 h-full px-4 text-[15px] font-bold border-b-[3px] transition-colors pt-0.5 ${
               viewType === "day"
                 ? "text-brand border-brand"
                 : "text-text-secondary border-transparent hover:text-text-primary hover:border-border-strong"
@@ -49,7 +49,7 @@ export default function ActionBar() {
 
           <button
             onClick={() => setViewType("horizontal")}
-            className={`flex items-center gap-2 h-full px-4 text-[15px] font-bold border-b-[3px] transition-colors pt-0.5 ${
+            className={`relative -mb-px flex items-center gap-2 h-full px-4 text-[15px] font-bold border-b-[3px] transition-colors pt-0.5 ${
               viewType === "horizontal"
                 ? "text-brand border-brand"
                 : "text-text-secondary border-transparent hover:text-text-primary hover:border-border-strong"

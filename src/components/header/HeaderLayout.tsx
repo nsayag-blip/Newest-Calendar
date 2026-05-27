@@ -10,7 +10,7 @@ export default function HeaderLayout() {
   const showTray = isFilterTrayOpen || viewType === "range";
 
   return (
-    <header className="sticky top-0 z-[var(--z-sticky)] flex flex-col bg-white border-b border-border shadow-sm">
+    <header className="sticky top-0 z-[var(--z-sticky)] flex flex-col bg-white shadow-sm">
       <TopBar />
       <ActionBar />
       {showTray && <FilterTray />}
