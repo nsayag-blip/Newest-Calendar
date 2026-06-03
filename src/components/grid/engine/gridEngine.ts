@@ -1,4 +1,4 @@
-// src/lib/engine/positioning.ts
+// src/components/grid/engine/gridEngine.ts
 import {
   EngineBlock,
   RenderableBlock,

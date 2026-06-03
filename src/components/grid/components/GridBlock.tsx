@@ -1,4 +1,4 @@
-// src/components/views/shared/GridBlock.tsx
+// src/components/grid/components/GridBlock.tsx
 import { memo } from "react";
 import { RenderableBlock } from "../../../types/engine";
 

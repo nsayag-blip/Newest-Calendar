@@ -189,7 +189,7 @@ export default function FilterTray() {
           })}
 
           {filters.shiftStatuses.map((id) => {
-            const status = statusMap.get(id);
+            const status = statusMap.get(id as ShiftStatus);
             if (!status) return null;
             return (
               <Badge

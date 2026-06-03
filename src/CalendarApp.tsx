@@ -3,6 +3,7 @@ import { useGridPipeline } from "./hooks/useGridPipeline";
 import HeaderLayout from "./components/header/HeaderLayout";
 import DayCanvas from "./components/grid/components/DayCanvas";
 import RangeCanvas from "./components/grid/components/RangeCanvas";
+import HorizontalCanvas from "./components/grid/components/HorizontalCanvas"; // <-- NEW
 import { GRID_CONFIG } from "./constants/config";
 
 function CalendarApp() {
@@ -18,7 +19,15 @@ function CalendarApp() {
           <RangeCanvas groups={groups} blocks={blocks} config={GRID_CONFIG} />
         );
       case "horizontal":
-        return null; // HorizontalCanvas — next sprint
+        // Feed it both columns and groups so it handles single-day or multi-day seamlessly
+        return (
+          <HorizontalCanvas
+            columns={columns}
+            groups={groups}
+            blocks={blocks}
+            config={GRID_CONFIG}
+          />
+        );
       case "day":
       default:
         return (

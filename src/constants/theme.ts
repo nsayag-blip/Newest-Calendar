@@ -58,7 +58,7 @@ export const APPOINTMENT_STATUS_LABEL: Record<AppointmentStatus, string> = {
 // ── Time density options ──────────────────────────────────
 
 export const TIME_DENSITY_OPTIONS: TimeDensity[] = [5, 10, 15, 30, 60];
-export const TIME_DENSITY_DEFAULT: TimeDensity = 30;
+export const TIME_DENSITY_DEFAULT: TimeDensity = 60;
 
 // ── Column density options ────────────────────────────────
 

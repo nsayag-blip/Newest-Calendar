@@ -1,7 +1,7 @@
 // src/components/layout/TopBar.tsx
 import { useMemo } from "react";
 import { parse } from "date-fns";
-import { HDate } from "@hebcal/core";
+import { HDate } from "@hebcal/hdate";
 import { useCalendarStore } from "../../store/appStore";
 import DateNavigator from "./DateNavigator";
 import ClinicDropdown from "./ClinicDropdown";
@@ -60,8 +60,8 @@ function RightSection() {
       value={appMode}
       onChange={setAppMode}
       options={[
-        { value: "shift", label: "יומן משמרות" },
         { value: "appointment", label: "יומן תורים" },
+        { value: "shift", label: "יומן משמרות" },
       ]}
     />
   );

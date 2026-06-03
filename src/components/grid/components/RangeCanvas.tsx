@@ -1,4 +1,4 @@
-// src/components/views/RangeView/RangeCanvas.tsx
+// src/components/grid/components/RangeCanvas.tsx
 import { memo, useMemo } from "react";
 import { RangeGroup, EngineBlock, GridConfig } from "../../../types/engine";
 import { calculatePositions } from "../engine/gridEngine";
@@ -7,7 +7,7 @@ import { getGridMetrics } from "../engine/gridMetrics";
 
 import GridColumn from "./GridColumn";
 import TimeRuler from "./TimeRuler";
-import CurrentTimeIndicator from "../../views/shared/CurrentTimeIndicator";
+//import CurrentTimeIndicator from "../../views/shared/CurrentTimeIndicator";
 
 interface Props {
   groups: RangeGroup[];

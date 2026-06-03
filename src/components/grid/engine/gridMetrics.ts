@@ -1,4 +1,4 @@
-// src/utils/gridMetrics.ts
+// src/components/grid/engine/gridMetrics.ts
 
 /**
  * Calculates the physical pixel dimensions of the grid based on the current time density.

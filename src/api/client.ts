@@ -17,7 +17,7 @@ import {
 } from "../data/mockSalesforce";
 import { CalendarApi } from "./salesforce";
 
-const IS_LOCAL_DEV = true;
+const IS_LOCAL_DEV = false;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

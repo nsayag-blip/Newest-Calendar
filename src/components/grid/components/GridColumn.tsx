@@ -1,4 +1,4 @@
-// src/components/views/shared/GridColumn.tsx
+// src/components/grid/components/GridColumn.tsx
 import { memo, useMemo, useState, useCallback } from "react";
 import {
   EngineColumn,

@@ -1,4 +1,4 @@
-// src/components/grid/components/TimeRuler.tsx
+// src/components/grid/components/HorizontalTimeRuler.tsx
 import { memo } from "react";
 import { GridConfig } from "../../../types/engine";
 import { useCalendarStore } from "../../../store/appStore";
@@ -8,13 +8,12 @@ interface Props {
   config: GridConfig;
 }
 
-const TimeRuler = memo(({ config }: Props) => {
+const HorizontalTimeRuler = memo(({ config }: Props) => {
   const { timeDensity } = useCalendarStore();
-  const { hourHeightPx } = getGridMetrics(timeDensity);
+  const { hourHeightPx: hourWidthPx } = getGridMetrics(timeDensity);
 
   const totalMinutes = config.endMinutes - config.startMinutes;
   const totalHours = totalMinutes / 60;
-  const gridHeightPx = totalHours * hourHeightPx;
 
   const hourMarkers = Array.from({ length: totalHours }, (_, i) => {
     const currentMinutes = config.startMinutes + i * 60;
@@ -22,22 +21,22 @@ const TimeRuler = memo(({ config }: Props) => {
     return {
       id: `ruler_hour_${i}`,
       label: `${String(hour).padStart(2, "0")}:00`,
-      topPx: i * hourHeightPx, // 👈 Now completely dynamic!
+      startPx: i * hourWidthPx,
     };
   });
 
   return (
-    <div className="relative w-full" style={{ height: `${gridHeightPx}px` }}>
-      {hourMarkers.map(({ id, label, topPx }) => (
+    <div className="relative w-full h-full min-h-[48px]">
+      {hourMarkers.map(({ id, label, startPx }) => (
         <div
           key={id}
-          className="absolute w-full flex items-center justify-end pe-4"
+          className="absolute h-full flex items-center justify-start ps-2 border-e border-border/50"
           style={{
-            top: `${topPx}px`,
-            transform: "translateY(-50%)",
+            insetInlineStart: `${startPx}px`,
+            width: `${hourWidthPx}px`,
           }}
         >
-          <span className="text-[12px] text-text-muted font-bold tabular-nums leading-none">
+          <span className="text-[12px] text-text-muted font-bold tabular-nums">
             {label}
           </span>
         </div>
@@ -46,4 +45,4 @@ const TimeRuler = memo(({ config }: Props) => {
   );
 });
 
-export default TimeRuler;
+export default HorizontalTimeRuler;
