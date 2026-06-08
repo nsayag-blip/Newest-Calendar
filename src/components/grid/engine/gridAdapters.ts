@@ -45,7 +45,7 @@ const formatTimeRange = (start: string | Date, end: string | Date): string => {
 };
 const formatResourceLabel = (resource: ServiceResource | undefined): string => {
   if (!resource) return "צוות רפואי";
-  return `ד"ר ${resource.Name}`;
+  return `${resource.Name}`;
 };
 
 // ── Room + Doctor resolution ──────────────────────────────
@@ -60,7 +60,8 @@ const getAppointmentDoctorId = (appt: ServiceAppointment): string | null =>
 // ── Display Factories ─────────────────────────────────────
 
 const buildShiftDisplay = (shift: Shift, resource?: ServiceResource) => ({
-  title: formatResourceLabel(resource),
+  title: formatResourceLabel(resource) + ` · ${shift.Id}`, // testing things needs to be only formatResourceLabel(resource)
+  id: shift.Id, // testing things needs to be removed
   subtitle: `${SHIFT_STATUS_LABEL[shift.Status] ?? shift.Status} · ${formatTimeRange(shift.StartTime, shift.EndTime)}`,
   bgColor: shift.BackgroundColor ?? SHIFT_STATUS_BG[shift.Status] ?? "#F3F2F2",
   borderColor: SHIFT_STATUS_BORDER[shift.Status] ?? "#DDDBDA",
@@ -78,13 +79,21 @@ const getLocalDateString = (value: string | Date): string => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
 
+
+
+
+
 // ── Shift Mode Adapter ────────────────────────────────────
 
 export const adaptToShiftMode = (
   shifts: Shift[],
   rooms: ServiceTerritory[],
+  resources: ServiceResource[],
   date: string,
 ) => {
+
+  const resourceMap = new Map(resources.map((r) => [r.Id, r])); 
+
   const todaysShifts = shifts.filter(
     (s) => getLocalDateString(s.StartTime) === date,
   );
@@ -92,7 +101,7 @@ export const adaptToShiftMode = (
   // All rooms are always shown as columns — even ones with no shifts today.
   // This is intentional: empty columns tell staff that a room is available.
   const columns: EngineColumn[] = rooms.map((room) => {
-    const headerLabel = `חדר ${decodeHtml((room.Room_Number__c)?.toString())}`;
+    const headerLabel = `חדר ${decodeHtml(room.Room_Number__c?.toString())}`;
     return {
       id: `room_${room.Id}`,
       date,
@@ -108,9 +117,9 @@ export const adaptToShiftMode = (
     endMinutes: extractMinutes(shift.EndTime),
     itemType: "shift",
     payload: shift,
-    display: buildShiftDisplay(shift),
+    display: buildShiftDisplay(shift, resourceMap.get(shift.ServiceResourceId)),
   }));
-
+  console.log("First EngineBlock:", blocks[0]);
   return { columns, blocks };
 };
 

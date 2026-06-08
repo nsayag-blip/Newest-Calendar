@@ -6,7 +6,10 @@ import { addDays, format, parse } from "date-fns";
 // ── NEW HELPER: Single source of truth for date calculations ──
 const calculateDateRange = (baseDate: string, isRange: boolean) => {
   return isRange
-    ? format(addDays(parse(baseDate, "yyyy-MM-dd", new Date()), 30), "yyyy-MM-dd")
+    ? format(
+        addDays(parse(baseDate, "yyyy-MM-dd", new Date()), 30),
+        "yyyy-MM-dd",
+      )
     : baseDate;
 };
 
@@ -30,7 +33,7 @@ export function useRooms(clinicId: string | null) {
 export function useResources(clinicId: string | null) {
   return useQuery({
     queryKey: ["resources", clinicId],
-    queryFn: () => salesforceApi.getResources(clinicId!),
+    queryFn: () => salesforceApi.getServiceResources(clinicId!),
     enabled: !!clinicId,
     staleTime: 1000 * 60 * 60,
   });
@@ -43,9 +46,15 @@ export function useShifts(
 ) {
   return useQuery({
     queryKey: ["shifts", clinicId, date, isRange ? "range" : "daily"],
-    queryFn: () => salesforceApi.getShifts(clinicId!, date, calculateDateRange(date, isRange)),
+    queryFn: () =>
+      salesforceApi.getShifts(
+        clinicId!,
+        date,
+        calculateDateRange(date, isRange),
+      ),
     enabled: !!clinicId && !!date,
     staleTime: 1000 * 60, // 60 seconds buffer to prevent API spam
+    retry: false,
   });
 }
 
@@ -56,9 +65,15 @@ export function useAppointments(
 ) {
   return useQuery({
     queryKey: ["appointments", clinicId, date, isRange ? "range" : "daily"],
-    queryFn: () => salesforceApi.getAppointments(clinicId!, date, calculateDateRange(date, isRange)),
+    queryFn: () =>
+      salesforceApi.getAppointments(
+        clinicId!,
+        date,
+        calculateDateRange(date, isRange),
+      ),
     enabled: !!clinicId && !!date,
     staleTime: 1000 * 60, // 60 seconds buffer to prevent API spam
+    retry: false, //
   });
 }
 
@@ -80,7 +95,12 @@ export function useShiftWorkTopics(
 ) {
   return useQuery({
     queryKey: ["shiftWorkTopics", clinicId, date, isRange ? "range" : "daily"],
-    queryFn: () => salesforceApi.getShiftWorkTopics(clinicId!, date, calculateDateRange(date, isRange)),
+    queryFn: () =>
+      salesforceApi.getShiftWorkTopics(
+        clinicId!,
+        date,
+        calculateDateRange(date, isRange),
+      ),
     enabled: !!clinicId && !!date,
     staleTime: 1000 * 60, // 60 seconds buffer to prevent API spam
   });

@@ -1,6 +1,4 @@
 // src/hooks/useGridPipeline.ts
-// Responsible for ONE thing: transforming raw SF data into render-ready engine blocks.
-
 import { useMemo } from "react";
 import { useCalendarStore } from "../store/appStore";
 import { addDays, format, parse } from "date-fns";
@@ -38,7 +36,6 @@ export function useGridPipeline() {
     if (isFetching || !activeClinicId)
       return { columns: [], groups: [], blocks: [] };
 
-    // Pass shiftWorkTopics so work type filter checks ShiftWorkTopic records
     const filteredShifts = applyFilters(shifts, filters, shiftWorkTopics);
     const filteredAppointments = applyFilters(
       appointments,
@@ -63,6 +60,7 @@ export function useGridPipeline() {
       const { columns, blocks } = adaptToShiftMode(
         filteredShifts,
         rooms,
+        resources,
         selectedDate,
       );
       return { columns, groups: [], blocks };

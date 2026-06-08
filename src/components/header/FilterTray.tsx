@@ -34,21 +34,41 @@ export default function FilterTray() {
   const { data: workTypes = [], isLoading: isLoadingWorkTypes } =
     useWorkTypes(activeClinicId);
 
+  //console.log(JSON.stringify(resources, null, 2));
+
   // ── Dropdown options ──────────────────────────────────────────────────────
 
   const staffOptions = useMemo(
     () =>
       resources.map((r) => {
-        const type = r.ResourceType?.toLowerCase() ?? "";
-        let prefix = 'ד"ר';
-        if (type.includes("specialist") || type.includes("מומחה"))
-          prefix = "מומחה";
-        else if (type.includes("hygienist") || type.includes("שיננית"))
-          prefix = "מר'/גב'";
-        return { id: r.Id, label: `${prefix} ${r.Name}` };
+        //const type = r.ResourceType?.toLowerCase() ?? "";
+        // let prefix = 'ד"ר';
+        // if (type.includes("specialist") || type.includes("מומחה"))
+        //   prefix = "מומחה";
+        // else if (type.includes("hygienist") || type.includes("שיננית"))
+        //   prefix = "מר'/גב'";
+        return { id: r.Id, label: `${r.Name}` };
       }),
     [resources],
   );
+
+  // const RESOURCE_TYPE_PREFIX: Record<string, string> = {
+  //   T: 'ד"ר', // Technician — doctor
+  //   D: 'ד"ר', // Doctor (custom) — check your org
+  //   P: "פיזיו", // Physiotherapist? — check your org
+  //   C: "צוות", // Crew
+  //   S: "צוות", // Service Crew Member
+  //   A: "ציוד", // Asset — non-human
+  // };
+
+  // const staffOptions = useMemo(
+  //   () =>
+  //     resources.map((r) => {
+  //       const prefix = RESOURCE_TYPE_PREFIX[r.ResourceType ?? "T"] ?? 'ד"ר';
+  //       return { id: r.Id, label: `${prefix} ${r.Name}` };
+  //     }),
+  //   [resources],
+  // );
 
   const workTypeOptions = useMemo(
     () => workTypes.map((wt) => ({ id: wt.Id, label: wt.Name })),

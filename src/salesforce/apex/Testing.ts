@@ -1,4 +1,4 @@
-import { invokeRemote } from "../utils/remote";
+import { invokeRemote } from "../../api/remote";
 
 const CONTROLLER = "Calendar_Ctrl";
 

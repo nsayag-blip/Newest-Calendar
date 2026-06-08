@@ -1,5 +1,5 @@
 // src/api/salesforce.ts
-import { invokeRemote } from "../salesforce/utils/remote";
+import { invokeRemote } from "./remote";
 import {
   Shift,
   ServiceAppointment,
@@ -12,7 +12,6 @@ import {
 const CONTROLLER = "Calendar_Ctrl";
 
 export const CalendarApi = {
-
   getClinics(): Promise<ServiceTerritory[]> {
     return invokeRemote<ServiceTerritory[]>(`${CONTROLLER}.getClinics`);
   },
@@ -21,16 +20,37 @@ export const CalendarApi = {
     return invokeRemote<ServiceTerritory[]>(`${CONTROLLER}.getRooms`, clinicId);
   },
 
-  getResources(clinicId: string): Promise<ServiceResource[]> {
-    return invokeRemote<ServiceResource[]>(`${CONTROLLER}.getResources`, clinicId);
+  getServiceResources(clinicId: string): Promise<ServiceResource[]> {
+    return invokeRemote<ServiceResource[]>(
+      `${CONTROLLER}.getServiceResources`,
+      clinicId,
+    );
   },
 
-  getShifts(clinicId: string, startDate: string, endDate: string): Promise<Shift[]> {
-    return invokeRemote<Shift[]>(`${CONTROLLER}.getShifts`, clinicId, startDate, endDate);
+  getShifts(
+    clinicId: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<Shift[]> {
+    return invokeRemote<Shift[]>(
+      `${CONTROLLER}.getShifts`,
+      clinicId,
+      startDate,
+      endDate,
+    );
   },
 
-  getAppointments(clinicId: string, startDate: string, endDate: string): Promise<ServiceAppointment[]> {
-    return invokeRemote<ServiceAppointment[]>(`${CONTROLLER}.getAppointments`, clinicId, startDate, endDate);
+  getAppointments(
+    clinicId: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<ServiceAppointment[]> {
+    return invokeRemote<ServiceAppointment[]>(
+      `${CONTROLLER}.getAppointments`,
+      clinicId,
+      startDate,
+      endDate,
+    );
   },
 
   /** Fetches WorkType records available in this clinic's rooms via ServiceTerritoryWorkType. */
@@ -39,7 +59,16 @@ export const CalendarApi = {
   },
 
   /** Fetches ShiftWorkTopic records for shifts in the given date range. */
-  getShiftWorkTopics(clinicId: string, startDate: string, endDate: string): Promise<ShiftWorkTopic[]> {
-    return invokeRemote<ShiftWorkTopic[]>(`${CONTROLLER}.getShiftWorkTopics`, clinicId, startDate, endDate);
+  getShiftWorkTopics(
+    clinicId: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<ShiftWorkTopic[]> {
+    return invokeRemote<ShiftWorkTopic[]>(
+      `${CONTROLLER}.getShiftWorkTopics`,
+      clinicId,
+      startDate,
+      endDate,
+    );
   },
 };

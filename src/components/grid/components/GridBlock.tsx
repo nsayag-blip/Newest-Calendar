@@ -19,15 +19,19 @@ const GridBlock = memo(({ block }: Props) => {
         insetInlineStart: `${block.position.leftPercent}%`,
         zIndex: block.position.zIndex,
         backgroundColor: bgColor,
-        borderRight: `4px solid ${borderColor}`,
-        borderTop: `1px solid ${borderColor}`,
-        borderLeft: `1px solid ${borderColor}`,
-        borderBottom: `1px solid ${borderColor}`,
-        color: textColor ?? "#1f2937",
+        borderRight: `${borderColor}`,
+        borderTop: `${borderColor}`,
+        borderLeft: `${borderColor}`,
+        borderBottom: `${borderColor}`,
+        // borderRight: `4px solid ${borderColor}`,
+        // borderTop: `1px solid ${borderColor}`,
+        // borderLeft: `1px solid ${borderColor}`,
+        // borderBottom: `1px solid ${borderColor}`,
+        color: textColor,
       }}
     >
       <div className="text-xs font-bold truncate">{title}</div>
-      <div className="text-[10px] truncate mt-0.5 opacity-80">{subtitle}</div>
+      <div className="text-[10px] truncate mt-0.5 ">{subtitle}</div>
     </div>
   );
 });

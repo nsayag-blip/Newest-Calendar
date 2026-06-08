@@ -1,20 +1,13 @@
-import { invokeRemote } from '../utils/remote';
+import { invokeRemote } from "../../api/remote";
 
-const CONTROLLER = 'HealthcareFacilityController';
+const CONTROLLER = "HealthcareFacilityController";
 
 export const HealthcareFacilityApi = {
   getName(recordId: string): Promise<string> {
-    return invokeRemote<string>(
-      `${CONTROLLER}.getName`,
-      recordId
-    );
+    return invokeRemote<string>(`${CONTROLLER}.getName`, recordId);
   },
 
   updateName(recordId: string, name: string): Promise<void> {
-    return invokeRemote<void>(
-      `${CONTROLLER}.updateName`,
-      recordId,
-      name
-    );
-  }
+    return invokeRemote<void>(`${CONTROLLER}.updateName`, recordId, name);
+  },
 };

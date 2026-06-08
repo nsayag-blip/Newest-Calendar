@@ -17,7 +17,7 @@ import {
 } from "../data/mockSalesforce";
 import { CalendarApi } from "./salesforce";
 
-const IS_LOCAL_DEV = false;
+const IS_LOCAL_DEV = true;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -48,8 +48,9 @@ export const salesforceApi = {
     return mockRooms;
   },
 
-  async getResources(clinicId?: string): Promise<ServiceResource[]> {
-    if (!IS_LOCAL_DEV && clinicId) return CalendarApi.getResources(clinicId);
+  async getServiceResources(clinicId?: string): Promise<ServiceResource[]> {
+    if (!IS_LOCAL_DEV && clinicId)
+      return CalendarApi.getServiceResources(clinicId);
     await delay(400);
     return mockResources;
   },

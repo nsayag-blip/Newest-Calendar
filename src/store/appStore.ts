@@ -15,8 +15,8 @@ import {
 
 // ── Pure helpers (no Zustand dependency) ─────────────────
 
-const toggleArrayItem = <T>(arr: T[], item: T): T[] =>
-  arr.includes(item) ? arr.filter((i) => i !== item) : [...arr, item];
+// Utility to toggle an item in an array (add if missing, remove if present)
+const toggleArrayItem = <T>(arr: T[], item: T): T[] => arr.includes(item) ? arr.filter((i) => i !== item) : [...arr, item];
 
 const hasActiveFilters = (filters: FilterState): boolean =>
   filters.resourceIds.length > 0 ||
@@ -24,10 +24,9 @@ const hasActiveFilters = (filters: FilterState): boolean =>
   filters.shiftStatuses.length > 0;
 
 // When any filter is active, switch to range view so results are visible.
-// Exception: don't clobber horizontal view — it has its own filter behaviour.
 const resolveViewType = (filters: FilterState, current: ViewType): ViewType => {
   if (hasActiveFilters(filters) && current !== "horizontal") return "range";
-  if (!hasActiveFilters(filters) && current === "range") return "day"; // ← add this
+  if (!hasActiveFilters(filters) && current === "range") return "day";
   return current;
 };
 
