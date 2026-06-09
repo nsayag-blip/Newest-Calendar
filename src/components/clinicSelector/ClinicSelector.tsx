@@ -194,6 +194,16 @@ export default function ClinicSelector({ availableClinics }: Props) {
   const setActiveClinicId = useCalendarStore(
     (state) => state.setActiveClinicId,
   );
+  const { data: clinics = [], isLoading} = useClinics();
+
+  if (isLoading) {
+    return (
+      <div className="w-screen h-screen bg-surface-alt flex items-center justify-center font-sans">
+        <div className="w-12 h-12 border-4 border-brand/20 border-t-brand rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
 
   return (
     <div

@@ -13,7 +13,7 @@ export function useCalendarFetch() {
 
   const isRange = viewType === "range";
 
-  const { data: rooms        = [], isLoading: loadingRooms      } = useRooms(activeClinicId);
+  const { data: rooms= [], isLoading: loadingRooms      } = useRooms(activeClinicId);
   const { data: resources    = [], isLoading: loadingResources  } = useResources(activeClinicId);
   const { data: shifts       = [], isLoading: loadingShifts     } = useShifts(activeClinicId, selectedDate, isRange);
   const { data: appointments = [], isLoading: loadingAppts      } = useAppointments(activeClinicId, selectedDate, isRange);
