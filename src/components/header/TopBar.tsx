@@ -7,6 +7,8 @@ import DateNavigator from "./DateNavigator";
 import ClinicDropdown from "./ClinicDropdown";
 import ModeToggle from "../ui/ModeToggle";
 import Toggle from "../ui/Toggle";
+import { notify } from "../../utils/notifications"; // TEST: remove
+import { getErrorMessage } from "../../utils/errors"; // TEST: remove
 
 // ── Sub-components ────────────────────────────────────────
 
@@ -27,7 +29,15 @@ function HebrewDateToggle({ selectedDate }: { selectedDate: string }) {
     <div className="flex items-center gap-3">
       <Toggle
         checked={showHebrewDate}
-        onChange={toggleHebrewDate}
+        onChange={() => {
+          // TEST: action-path check — handler error → toast, no blank screen. Remove this block.
+          try {
+            throw new Error("test");
+          } catch (err) {
+            notify.error(getErrorMessage(err, "בדיקה: שגיאה בהחלפת תאריך עברי"));
+          }
+          toggleHebrewDate();
+        }}
         label="תאריך עברי"
         labelSide="right"
       />
