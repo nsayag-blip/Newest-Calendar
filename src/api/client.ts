@@ -110,7 +110,17 @@ export const salesforceApi = {
   },
 
   async getCurrentUser(): Promise<UserContext> {
-    if (!IS_LOCAL_DEV) return CalendarApi.getCurrentUser();
+    if (!IS_LOCAL_DEV) {
+      try {
+        const data = await CalendarApi.getCurrentUser();
+        // This log will print the exact JSON payload your Apex controller built!
+        console.log("🌐 [API] Real Salesforce UserContext Returned:", JSON.parse(JSON.stringify(data)));
+        return data;
+      } catch (err) {
+        console.error("🌐 [API] Real Salesforce ERROR:", err);
+        throw err;
+      }
+    }
 
     // Simulate a network delay so we can see our loading spinner later
     await delay(600);
