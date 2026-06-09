@@ -8,6 +8,7 @@ import {
   ShiftWorkTopic,
   WorkType,
 } from "../types/sf";
+import { UserContext } from "@/types/user";
 
 const CONTROLLER = "Calendar_Ctrl";
 
@@ -71,4 +72,14 @@ export const CalendarApi = {
       endDate,
     );
   },
+
+  
+  getCurrentUser(): Promise<UserContext> {
+    return invokeRemote<UserContext>(`${CONTROLLER}.getCurrentUser`);
+  },
+
+  getAllClinics(): Promise<ServiceTerritory[]> {
+    return invokeRemote<ServiceTerritory[]>(`${CONTROLLER}.getAllClinics`);
+  },
+
 };

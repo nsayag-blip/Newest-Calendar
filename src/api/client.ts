@@ -16,8 +16,9 @@ import {
   mockShiftWorkTopics,
 } from "../data/mockSalesforce";
 import { CalendarApi } from "./salesforce";
+import { UserContext } from "@/types/user";
 
-const IS_LOCAL_DEV = true;
+const IS_LOCAL_DEV = false;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -106,5 +107,71 @@ export const salesforceApi = {
     );
     const shiftIds = new Set(shiftsInRange.map((s) => s.Id));
     return mockShiftWorkTopics.filter((t) => shiftIds.has(t.ShiftId));
+  },
+
+  async getCurrentUser(): Promise<UserContext> {
+    if (!IS_LOCAL_DEV) return CalendarApi.getCurrentUser();
+
+    // Simulate a network delay so we can see our loading spinner later
+    await delay(600);
+
+    // Return a perfectly typed mock user
+    return {
+      user: {
+        Id: "u1",
+        Name: "Local Admin",
+        Email: "admin@test.com",
+        ProfileId: "p1",
+      },
+      employee: null,
+      profile: { Id: "p1", Name: "System Administrator", UserType: "Standard" },
+      permissionSets: [],
+      isSuperUser: true, // We will test as a Super User first
+      mainClinic: null,
+      tempClinics: [],
+      nearClinics: [],
+    };
+  },
+
+
+
+  // Inside src/api/client.ts
+  async getAllClinics(): Promise<any[]> {
+    console.log("🌐 [API] getAllClinics requested...");
+
+    if (!IS_LOCAL_DEV) {
+      // If hitting real Salesforce:
+      try {
+        const data = await CalendarApi.getAllClinics();
+        console.log("🌐 [API] Real Salesforce returned:", data);
+        return data;
+      } catch (err) {
+        console.error("🌐 [API] Real Salesforce ERROR:", err);
+        throw err;
+      }
+    }
+    
+    // If using the local mock:
+    await delay(300); 
+    
+    const mockData = [
+      {
+        Id: "clinic_1",
+        Name: "תל אביב מרכז",
+        Type__c: "Clinic",
+        Branch_Code__c: "10",
+        IsActive: true,
+      },
+      {
+        Id: "clinic_2",
+        Name: "חיפה והקריות",
+        Type__c: "Clinic",
+        Branch_Code__c: "20",
+        IsActive: true,
+      }
+    ];
+
+    console.log("🌐 [API] Local Mock returned:", mockData);
+    return mockData;
   },
 };
