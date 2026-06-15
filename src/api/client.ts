@@ -23,25 +23,7 @@ const IS_LOCAL_DEV = false;
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const salesforceApi = {
-  async getClinics(): Promise<ServiceTerritory[]> {
-    if (!IS_LOCAL_DEV) return CalendarApi.getClinics();
-    await delay(300);
-    return [
-      {
-        Id: "clinic_1",
-        Name: "תל אביב מרכז (פיתוח)",
-        Type__c: "Clinic" as const,
-        ParentTerritoryId: null,
-        Branch_Code__c: "10",
-        Healthcare_Provider__c: null,
-        IsActive: true,
-        Room_Number__c: null,
-        Room_Code__c: null,
-        Room_Type__c: null,
-        First_Aid__c: false,
-      },
-    ];
-  },
+
 
   async getRooms(clinicId?: string): Promise<ServiceTerritory[]> {
     if (!IS_LOCAL_DEV && clinicId) return CalendarApi.getRooms(clinicId);

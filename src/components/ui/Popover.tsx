@@ -22,6 +22,7 @@ interface PopoverContentProps {
   sideOffset?: number;
   className?: string;
   minWidth?: number;
+  maxHeight?: number; // new — lets consumers cap height for scrollable lists
 }
 
 export function Popover({ children, open, onOpenChange }: PopoverProps) {
@@ -45,6 +46,7 @@ export function PopoverContent({
   sideOffset = 6,
   className = "",
   minWidth,
+  maxHeight,
 }: PopoverContentProps) {
   return (
     <RadixPopover.Portal>
@@ -52,8 +54,9 @@ export function PopoverContent({
         align={align}
         side={side}
         sideOffset={sideOffset}
+        collisionPadding={8}  // keeps the panel 8px from viewport edges inside the SF iframe
         className={`z-[100] bg-surface border border-border rounded-lg shadow-lg outline-none ${className}`}
-        style={{ minWidth }}
+        style={{ minWidth, maxHeight }}
       >
         {children}
       </RadixPopover.Content>

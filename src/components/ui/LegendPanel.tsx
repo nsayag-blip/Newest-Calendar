@@ -17,22 +17,26 @@ interface LegendPanelProps {
 }
 
 interface LegendRowProps {
-  bg:     string;
+  bg: string;
   border: string;
-  label:  string;
+  label: string;
 }
 
 // ── Sub-components ────────────────────────────────────────
 
-function LegendSection({ title, children }: { title: string; children: React.ReactNode }) {
+function LegendSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
       <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] mb-2">
         {title}
       </p>
-      <div className="flex flex-col gap-1.5">
-        {children}
-      </div>
+      <div className="flex flex-col gap-1.5">{children}</div>
     </div>
   );
 }
@@ -80,9 +84,18 @@ function LegendTrigger() {
       title="מקרא צבעים"
       aria-label="פתח מקרא צבעים"
     >
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
       </svg>
     </button>
   );
@@ -97,9 +110,11 @@ export function LegendPanel({ appMode }: LegendPanelProps) {
         <LegendTrigger />
       </PopoverTrigger>
 
-      <PopoverContent align="end" minWidth={260}>
-        <div className="p-4 flex flex-col gap-5">
-
+      <PopoverContent align="end" minWidth={260} maxHeight={400}>
+        <div
+          className="p-4 flex flex-col gap-5 overflow-y-auto custom-scrollbar"
+          style={{ maxHeight: 368 }}
+        >
           {/* Header */}
           <div>
             <p className="text-base font-bold text-[var(--color-text-primary)]">
@@ -113,10 +128,14 @@ export function LegendPanel({ appMode }: LegendPanelProps) {
           {/* ── Shift calendar legend ── */}
           {appMode === "shift" && (
             <LegendSection title="סטטוס משמרת">
-              {(Object.keys(SHIFT_STATUS_LABEL) as Array<keyof typeof SHIFT_STATUS_LABEL>).map((status) => (
+              {(
+                Object.keys(SHIFT_STATUS_LABEL) as Array<
+                  keyof typeof SHIFT_STATUS_LABEL
+                >
+              ).map((status) => (
                 <LegendRow
                   key={status}
-                  bg={SHIFT_STATUS_BG[status]     ?? "#FFFFFF"}
+                  bg={SHIFT_STATUS_BG[status] ?? "#FFFFFF"}
                   border={SHIFT_STATUS_BORDER[status] ?? "#9E9E9E"}
                   label={SHIFT_STATUS_LABEL[status]}
                 />
@@ -128,7 +147,11 @@ export function LegendPanel({ appMode }: LegendPanelProps) {
           {appMode === "appointment" && (
             <>
               <LegendSection title="סטטוס תור">
-                {(Object.keys(APPOINTMENT_STATUS_LABEL) as Array<keyof typeof APPOINTMENT_STATUS_LABEL>).map((status) => (
+                {(
+                  Object.keys(APPOINTMENT_STATUS_LABEL) as Array<
+                    keyof typeof APPOINTMENT_STATUS_LABEL
+                  >
+                ).map((status) => (
                   <LegendRow
                     key={status}
                     bg={APPOINTMENT_STATUS_BG[status] ?? "#FFFFFF"}
@@ -139,7 +162,11 @@ export function LegendPanel({ appMode }: LegendPanelProps) {
               </LegendSection>
 
               <LegendSection title="סוג משמרת">
-                {(Object.keys(SHIFT_TYPE_BG) as Array<keyof typeof SHIFT_TYPE_BG>).map((type) => (
+                {(
+                  Object.keys(SHIFT_TYPE_BG) as Array<
+                    keyof typeof SHIFT_TYPE_BG
+                  >
+                ).map((type) => (
                   <LegendRow
                     key={type}
                     bg={SHIFT_TYPE_BG[type]}
@@ -150,7 +177,6 @@ export function LegendPanel({ appMode }: LegendPanelProps) {
               </LegendSection>
             </>
           )}
-
         </div>
       </PopoverContent>
     </Popover>

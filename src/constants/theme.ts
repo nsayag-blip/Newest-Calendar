@@ -5,7 +5,7 @@ import type { TimeDensity, ColumnDensity } from "../types/calendar";
 // ── Shift calendar — block colors by Status ───────────────
 
 export const SHIFT_STATUS_BG: Record<ShiftStatus, string> = {
-  Published: "#EAF4FF",  // blue tint  — confirmed, visible to staff
+  Published: "#D6E6FF",  // blue tint  — confirmed, visible to staff
   Confirmed: "#E8F5E9",  // green tint — locked in
   Tentative: "#FFFDE7",  // yellow tint — not yet confirmed
 };
@@ -27,7 +27,6 @@ export const SHIFT_STATUS_LABEL: Record<ShiftStatus, string> = {
 
 export const SHIFT_TYPE_BG: Record<ShiftType, string> = {
   Regular: "#FFFFFF",
-  regular: "#FFFFFF",
   injections: "#B3E5FC",  // light blue
   whitening: "#FFE0B2",  // orange
   first_aid: "#FCE4EC",  // pink

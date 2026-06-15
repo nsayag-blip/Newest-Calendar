@@ -183,6 +183,7 @@
 // }
 
 // src/components/views/ClinicSelector/ClinicSelector.tsx
+// src/components/views/ClinicSelector/ClinicSelector.tsx
 import { useCalendarStore } from "../../store/appStore";
 import { MappedClinic } from "../../types/user";
 
@@ -191,32 +192,13 @@ interface Props {
 }
 
 export default function ClinicSelector({ availableClinics }: Props) {
-  const setActiveClinicId = useCalendarStore(
-    (state) => state.setActiveClinicId,
-  );
-  const { data: clinics = [], isLoading} = useClinics();
-
-  if (isLoading) {
-    return (
-      <div className="w-screen h-screen bg-surface-alt flex items-center justify-center font-sans">
-        <div className="w-12 h-12 border-4 border-brand/20 border-t-brand rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
+  const setActiveClinicId = useCalendarStore((state) => state.setActiveClinicId);
 
   return (
-    <div
-      className="w-screen h-screen bg-surface-alt flex flex-col items-center justify-center font-sans"
-      dir="rtl"
-    >
+    <div className="w-screen h-screen bg-surface-alt flex flex-col items-center justify-center font-sans" dir="rtl">
       <div className="bg-surface p-8 rounded-2xl shadow-xl border border-border max-w-lg w-full">
-        <h1 className="text-3xl font-bold text-text-primary mb-2 text-center">
-          ברוכים הבאים
-        </h1>
-        <p className="text-text-muted mb-8 text-center">
-          אנא בחר מרפאה כדי להציג את יומן החדרים
-        </p>
+        <h1 className="text-3xl font-bold text-text-primary mb-2 text-center">ברוכים הבאים</h1>
+        <p className="text-text-muted mb-8 text-center">אנא בחר מרפאה כדי להציג את יומן החדרים</p>
 
         <div className="flex flex-col gap-4 max-h-[60vh] overflow-y-auto pe-2 custom-scrollbar">
           {availableClinics.map(({ clinic, access }) => {
@@ -230,24 +212,19 @@ export default function ClinicSelector({ availableClinics }: Props) {
               >
                 <div className="flex flex-col">
                   <span>{clinic.Name}</span>
-                  {/* PRD Rule: Show View Only badge for Near Clinics */}
                   {isViewOnly && (
                     <span className="text-xs text-amber-700 bg-amber-100 border border-amber-200 w-max px-2 py-0.5 rounded mt-1">
                       צפייה בלבד
                     </span>
                   )}
                 </div>
-                <span className="text-brand opacity-0 group-hover:opacity-100 transition-opacity">
-                  ←
-                </span>
+                <span className="text-brand opacity-0 group-hover:opacity-100 transition-opacity">←</span>
               </button>
             );
           })}
 
           {availableClinics.length === 0 && (
-            <div className="text-center text-text-muted py-4">
-              לא נמצאו מרפאות פעילות במערכת.
-            </div>
+            <div className="text-center text-text-muted py-4">לא נמצאו מרפאות פעילות במערכת.</div>
           )}
         </div>
       </div>

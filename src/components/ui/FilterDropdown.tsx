@@ -13,6 +13,7 @@ interface FilterDropdownProps {
     options: FilterOption[];
     selectedIds: string[];
     onToggle: (id: string) => void;
+    onClear: () => void; // explicit clear callback — avoids mutating state while iterating
     className?: string;
 }
 
@@ -23,6 +24,7 @@ export function FilterDropdown({
     options,
     selectedIds,
     onToggle,
+    onClear,
     className = "",
 }: FilterDropdownProps) {
     const hasSelection = selectedIds.length > 0;
@@ -52,7 +54,6 @@ export function FilterDropdown({
           `}
                 >
                     <span>{label}{countLabel}</span>
-                    {/* Chevron */}
                     <svg
                         className="w-3.5 h-3.5 flex-shrink-0 text-[var(--color-text-muted)]"
                         fill="none"
@@ -65,17 +66,23 @@ export function FilterDropdown({
             </PopoverTrigger>
 
             {/* ── Dropdown panel ── */}
-            <PopoverContent align="start" minWidth={200}>
-                <div className="py-1" role="listbox" aria-multiselectable="true">
+            {/* maxHeight caps the whole panel; inner list scrolls independently */}
+            <PopoverContent align="start" minWidth={200} maxHeight={320}>
 
-                    {/* Header */}
-                    <div className="px-3 py-2 border-b border-[var(--color-border)]">
-                        <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">
-                            {label}
-                        </span>
-                    </div>
+                {/* Sticky header — always visible while scrolling */}
+                <div className="sticky top-0 z-10 px-3 py-2 border-b border-[var(--color-border)] bg-[var(--color-surface)] rounded-t-lg">
+                    <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">
+                        {label}
+                    </span>
+                </div>
 
-                    {/* Options */}
+                {/* Scrollable options list */}
+                <div
+                    className="overflow-y-auto custom-scrollbar"
+                    style={{ maxHeight: 220 }} // leaves room for header (40px) + footer (52px)
+                    role="listbox"
+                    aria-multiselectable="true"
+                >
                     {options.length === 0 && (
                         <div className="px-3 py-3 text-sm text-[var(--color-text-muted)] text-center">
                             אין אפשרויות
@@ -131,20 +138,20 @@ export function FilterDropdown({
                             </label>
                         );
                     })}
-
-                    {/* Footer: clear selection */}
-                    {hasSelection && (
-                        <div className="px-3 py-2 border-t border-[var(--color-border)]">
-                            <button
-                                type="button"
-                                onClick={() => selectedIds.forEach(onToggle)}
-                                className="text-xs font-semibold text-[var(--color-destructive)] hover:underline"
-                            >
-                                נקה בחירה
-                            </button>
-                        </div>
-                    )}
                 </div>
+
+                {/* Sticky footer — always visible, clears all selections atomically */}
+                {hasSelection && (
+                    <div className="sticky bottom-0 z-10 px-3 py-2 border-t border-[var(--color-border)] bg-[var(--color-surface)] rounded-b-lg">
+                        <button
+                            type="button"
+                            onClick={onClear}
+                            className="text-xs font-semibold text-[var(--color-destructive)] hover:underline"
+                        >
+                            נקה בחירה
+                        </button>
+                    </div>
+                )}
             </PopoverContent>
         </Popover>
     );

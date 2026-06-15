@@ -46,22 +46,6 @@ export default function App() {
     );
   }
 
-  // // ── 2. ERROR STATE ──
-  // if (isError || !userContext) {
-  //   return (
-  //     <div className="w-screen h-screen flex items-center justify-center bg-surface-alt font-sans">
-  //       <div className="bg-white p-8 rounded-lg shadow-sm border border-destructive flex flex-col items-center text-center max-w-sm">
-  //         <h3 className="text-lg font-bold text-destructive mb-2">
-  //           שגיאת התחברות
-  //         </h3>
-  //         <p className="text-sm text-text-secondary">
-  //           לא ניתן היה לאמת את הרשאות המשתמש. אנא רענן את העמוד.
-  //         </p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   // ── 3. ROUTING ──
   if (!activeClinicId) {
     return <ClinicSelector availableClinics={availableClinics} />;

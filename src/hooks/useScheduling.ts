@@ -13,13 +13,7 @@ const calculateDateRange = (baseDate: string, isRange: boolean) => {
     : baseDate;
 };
 
-export function useClinics() {
-  return useQuery({
-    queryKey: ["clinics"],
-    queryFn: () => salesforceApi.getClinics(),
-    staleTime: 1000 * 60 * 60,
-  });
-}
+
 
 export function useRooms(clinicId: string | null) {
   return useQuery({

@@ -13,9 +13,7 @@ import { UserContext } from "@/types/user";
 const CONTROLLER = "Calendar_Ctrl";
 
 export const CalendarApi = {
-  getClinics(): Promise<ServiceTerritory[]> {
-    return invokeRemote<ServiceTerritory[]>(`${CONTROLLER}.getClinics`);
-  },
+ 
 
   getRooms(clinicId: string): Promise<ServiceTerritory[]> {
     return invokeRemote<ServiceTerritory[]>(`${CONTROLLER}.getRooms`, clinicId);

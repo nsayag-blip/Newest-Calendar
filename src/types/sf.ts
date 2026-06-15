@@ -3,7 +3,6 @@
 export type ShiftStatus = "Published" | "Confirmed" | "Tentative";
 export type ShiftType =
   | "Regular"
-  | "regular"
   | "injections"
   | "whitening"
   | "first_aid";

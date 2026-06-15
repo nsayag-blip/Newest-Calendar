@@ -16,6 +16,8 @@ export interface EngineColumn {
 export interface BlockDisplayConfig {
   title: string;
   subtitle: string;
+  statusText?: string;
+  timeRange?: string;
   bgColor: string;
   borderColor: string;
   textColor?: string;

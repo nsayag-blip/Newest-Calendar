@@ -12,19 +12,12 @@ import {
   APPOINTMENT_STATUS_BG,
   SHIFT_STATUS_LABEL,
   APPOINTMENT_STATUS_LABEL,
-} from "../../../constants/theme"; // Point to our new theme constants!
+} from "../../../constants/theme"; 
+
+import { decodeHtml } from "../../../utils/string";
+
 
 // ── Helpers ───────────────────────────────────────────────
-
-const decodeHtml = (text: string | null | undefined): string => {
-  if (!text) return "";
-  return text
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
-};
 
 // SF remoting can return DateTime as either an ISO string or a JS Date object.
 // We normalise to Date here so every helper is safe regardless.
@@ -59,20 +52,30 @@ const getAppointmentDoctorId = (appt: ServiceAppointment): string | null =>
 
 // ── Display Factories ─────────────────────────────────────
 
-const buildShiftDisplay = (shift: Shift, resource?: ServiceResource) => ({
-  title: formatResourceLabel(resource) + ` · ${shift.Id}`, // testing things needs to be only formatResourceLabel(resource)
-  id: shift.Id, // testing things needs to be removed
-  subtitle: `${SHIFT_STATUS_LABEL[shift.Status] ?? shift.Status} · ${formatTimeRange(shift.StartTime, shift.EndTime)}`,
-  bgColor: shift.BackgroundColor ?? SHIFT_STATUS_BG[shift.Status] ?? "#F3F2F2",
-  borderColor: SHIFT_STATUS_BORDER[shift.Status] ?? "#DDDBDA",
-});
+const buildShiftDisplay = (shift: Shift, resource?: ServiceResource) => {
+  console.log("Building display for shift:", shift);
+  const statusLabel = SHIFT_STATUS_LABEL[shift.Status] ?? shift.Status;
+  const timeStr = formatTimeRange(shift.StartTime, shift.EndTime);
 
-const buildAppointmentDisplay = (appt: ServiceAppointment) => ({
-  title: appt.Description ?? appt.Subject ?? "תור חולה",
-  subtitle: `${APPOINTMENT_STATUS_LABEL[appt.Status] ?? appt.Status} · ${formatTimeRange(appt.SchedStartTime, appt.SchedEndTime)}`,
-  bgColor: APPOINTMENT_STATUS_BG[appt.Status] ?? "#FFFFFF",
-  borderColor: APPOINTMENT_STATUS_BG[appt.Status] ?? "#9E9E9E",
-});
+  return {
+    title: formatResourceLabel(resource) , 
+    //id: shift.Id, // testing things needs to be removed
+    subtitle: `${SHIFT_STATUS_LABEL[shift.Status] ?? shift.Status} · ${formatTimeRange(shift.StartTime, shift.EndTime)}`,
+    timeRange : timeStr,
+    statusText : statusLabel,
+    bgColor: shift.BackgroundColor ?? SHIFT_STATUS_BG[shift.Status] ?? "#F3F2F2",
+    borderColor: SHIFT_STATUS_BORDER[shift.Status] ?? "#DDDBDA",
+  };
+};
+
+const buildAppointmentDisplay = (appt: ServiceAppointment) => {
+  return {
+    title: appt.Description ?? appt.Subject ?? "תור חולה",
+    subtitle: `${APPOINTMENT_STATUS_LABEL[appt.Status] ?? appt.Status} · ${formatTimeRange(appt.SchedStartTime, appt.SchedEndTime)}`,
+    bgColor: APPOINTMENT_STATUS_BG[appt.Status] ?? "#FFFFFF",
+    borderColor: APPOINTMENT_STATUS_BG[appt.Status] ?? "#9E9E9E",
+  };
+};
 
 const getLocalDateString = (value: string | Date): string => {
   const d = toDate(value);
@@ -101,7 +104,7 @@ export const adaptToShiftMode = (
   // All rooms are always shown as columns — even ones with no shifts today.
   // This is intentional: empty columns tell staff that a room is available.
   const columns: EngineColumn[] = rooms.map((room) => {
-    const headerLabel = `חדר ${decodeHtml(room.Room_Number__c?.toString())}`;
+    const headerLabel = `חדר ${decodeHtml(room.Room_Number__c?.toString() ?? "")}`;
     return {
       id: `room_${room.Id}`,
       date,
