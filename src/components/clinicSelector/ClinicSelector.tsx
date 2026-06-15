@@ -185,6 +185,7 @@
 // src/components/views/ClinicSelector/ClinicSelector.tsx
 // src/components/views/ClinicSelector/ClinicSelector.tsx
 import { useCalendarStore } from "../../store/appStore";
+import { useLabels } from "../../hooks/useLabels";
 import { MappedClinic } from "../../types/user";
 
 interface Props {
@@ -193,12 +194,13 @@ interface Props {
 
 export default function ClinicSelector({ availableClinics }: Props) {
   const setActiveClinicId = useCalendarStore((state) => state.setActiveClinicId);
+  const labels = useLabels();
 
   return (
     <div className="w-screen h-screen bg-surface-alt flex flex-col items-center justify-center font-sans" dir="rtl">
       <div className="bg-surface p-8 rounded-2xl shadow-xl border border-border max-w-lg w-full">
-        <h1 className="text-3xl font-bold text-text-primary mb-2 text-center">ברוכים הבאים</h1>
-        <p className="text-text-muted mb-8 text-center">אנא בחר מרפאה כדי להציג את יומן החדרים</p>
+        <h1 className="text-3xl font-bold text-text-primary mb-2 text-center">{labels.CAL_CLINIC_WELCOME}</h1>
+        <p className="text-text-muted mb-8 text-center">{labels.CAL_CLINIC_SELECT_PROMPT}</p>
 
         <div className="flex flex-col gap-4 max-h-[60vh] overflow-y-auto pe-2 custom-scrollbar">
           {availableClinics.map(({ clinic, access }) => {
@@ -214,7 +216,7 @@ export default function ClinicSelector({ availableClinics }: Props) {
                   <span>{clinic.Name}</span>
                   {isViewOnly && (
                     <span className="text-xs text-amber-700 bg-amber-100 border border-amber-200 w-max px-2 py-0.5 rounded mt-1">
-                      צפייה בלבד
+                      {labels.CAL_CLINIC_VIEW_ONLY}
                     </span>
                   )}
                 </div>
@@ -224,7 +226,7 @@ export default function ClinicSelector({ availableClinics }: Props) {
           })}
 
           {availableClinics.length === 0 && (
-            <div className="text-center text-text-muted py-4">לא נמצאו מרפאות פעילות במערכת.</div>
+            <div className="text-center text-text-muted py-4">{labels.CAL_CLINIC_NONE_ACTIVE}</div>
           )}
         </div>
       </div>

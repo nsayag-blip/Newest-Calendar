@@ -232,7 +232,8 @@
 import { useEffect, useMemo } from "react";
 import { useCalendarStore } from "../../store/appStore";
 import { useResources, useWorkTypes } from "../../hooks/useScheduling";
-import { SHIFT_STATUS_LABEL } from "../../constants/theme";
+import { useLabels } from "../../hooks/useLabels";
+import { SHIFT_STATUS_LABEL_KEY } from "../../constants/theme";
 import type { ShiftStatus } from "../../types/sf";
 
 // UI Components
@@ -257,6 +258,7 @@ export default function FilterTray() {
     viewType,
     activeClinicId,
   } = useCalendarStore();
+  const labels = useLabels();
 
   const isRange = viewType === "range";
 
@@ -271,14 +273,14 @@ export default function FilterTray() {
     () =>
       resources.map((r) => {
         const type = r.ResourceType?.toLowerCase() ?? "";
-        let prefix = 'ד"ר';
+        let prefix: string = labels.CAL_RESOURCE_PREFIX_DOCTOR;
         if (type.includes("specialist") || type.includes("מומחה"))
-          prefix = "מומחה";
+          prefix = labels.CAL_RESOURCE_PREFIX_SPECIALIST;
         else if (type.includes("hygienist") || type.includes("שיננית"))
-          prefix = "מר'/גב'";
+          prefix = labels.CAL_RESOURCE_PREFIX_HYGIENIST;
         return { id: r.Id, label: `${prefix} ${decodeHtml(r.Name)}` };
       }),
-    [resources],
+    [resources, labels],
   );
 
   const workTypeOptions = useMemo(
@@ -288,8 +290,11 @@ export default function FilterTray() {
 
   const statusOptions = useMemo(
     () =>
-      FILTERABLE_STATUSES.map((s) => ({ id: s, label: SHIFT_STATUS_LABEL[s] })),
-    [],
+      FILTERABLE_STATUSES.map((s) => ({
+        id: s,
+        label: labels[SHIFT_STATUS_LABEL_KEY[s]],
+      })),
+    [labels],
   );
 
   // ── Fast lookup maps for pills ────────────────────────────────────────────
@@ -352,11 +357,11 @@ export default function FilterTray() {
                 d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
               />
             </svg>
-            סינון:
+            {labels.CAL_FILTER_TITLE}
           </span>
 
           <FilterDropdown
-            label={isLoadingResources ? "טוען..." : "איש צוות"}
+            label={isLoadingResources ? labels.CAL_GENERAL_LOADING_SHORT : labels.CAL_FILTER_STAFF}
             options={staffOptions}
             selectedIds={filters.resourceIds}
             onToggle={toggleResourceFilter}
@@ -364,7 +369,7 @@ export default function FilterTray() {
           />
 
           <FilterDropdown
-            label={isLoadingWorkTypes ? "טוען..." : "סוג טיפול"}
+            label={isLoadingWorkTypes ? labels.CAL_GENERAL_LOADING_SHORT : labels.CAL_FILTER_TREATMENT}
             options={workTypeOptions}
             selectedIds={filters.workTypeIds}
             onToggle={toggleWorkTypeFilter}
@@ -372,7 +377,7 @@ export default function FilterTray() {
           />
 
           <FilterDropdown
-            label="סטטוס משמרת"
+            label={labels.CAL_FILTER_SHIFT_STATUS}
             options={statusOptions}
             selectedIds={filters.shiftStatuses}
             onToggle={toggleShiftStatusFilter}
@@ -387,7 +392,7 @@ export default function FilterTray() {
             onClick={clearFilters}
             className="text-sm font-semibold text-destructive hover:text-destructive-hover hover:underline transition-colors"
           >
-            נקה הכל
+            {labels.CAL_GENERAL_CLEAR_ALL}
           </button>
         )}
       </div>

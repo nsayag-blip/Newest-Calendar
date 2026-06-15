@@ -8,11 +8,13 @@ import {
   adaptToRangeMode,
 } from "../components/grid/engine/gridAdapters";
 import { useCalendarFetch } from "./useCalendarFetch";
+import { useLabels } from "./useLabels";
 import { applyFilters } from "../utils/filters";
 
 export function useGridPipeline() {
   const { appMode, selectedDate, activeClinicId, viewType, filters } =
     useCalendarStore();
+  const labels = useLabels();
   const {
     rooms,
     resources,
@@ -52,6 +54,7 @@ export function useGridPipeline() {
         appMode,
         rooms,
         resources,
+        labels,
       );
       return { columns: [], groups, blocks };
     }
@@ -62,6 +65,7 @@ export function useGridPipeline() {
         rooms,
         resources,
         selectedDate,
+        labels,
       );
       return { columns, groups: [], blocks };
     }
@@ -72,6 +76,7 @@ export function useGridPipeline() {
       rooms,
       resources,
       selectedDate,
+      labels,
     );
     return { columns, groups: [], blocks };
   }, [
@@ -87,6 +92,7 @@ export function useGridPipeline() {
     isRange,
     activeDates,
     filters,
+    labels,
   ]);
 
   return { isFetching, activeClinicId, viewType, columns, groups, blocks };

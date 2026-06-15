@@ -3,6 +3,7 @@ import { useCalendarStore } from "../../store/appStore";
 import { format, parse, addDays, isToday } from "date-fns";
 import { he } from "date-fns/locale";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/Popover";
+import { useLabels } from "../../hooks/useLabels";
 import CalendarPicker from "./CalendarPicker";
 
 const toDisplayDate = (dateStr: string): string => {
@@ -13,6 +14,7 @@ const toDisplayDate = (dateStr: string): string => {
 export default function DateNavigator() {
   const { selectedDate, setSelectedDate, nextDay, prevDay, viewType } =
     useCalendarStore();
+  const labels = useLabels();
 
   const isRange = viewType === "range";
   const parsedDate = parse(selectedDate, "yyyy-MM-dd", new Date());
@@ -37,7 +39,7 @@ export default function DateNavigator() {
         disabled={isTodaySelected}
         className="text-brand font-bold text-[15px] hover:underline transition-all disabled:opacity-50 disabled:no-underline disabled:cursor-default"
       >
-        היום
+        {labels.CAL_NAV_TODAY}
       </button>
 
       <div className="flex items-center gap-1">
@@ -45,7 +47,7 @@ export default function DateNavigator() {
           type="button"
           onClick={prevDay}
           className="p-1 text-brand hover:bg-brand-subtle rounded transition-colors"
-          title="יום קודם"
+          title={labels.CAL_NAV_PREV_DAY}
         >
           <svg
             className="w-5 h-5"
@@ -65,7 +67,7 @@ export default function DateNavigator() {
           type="button"
           onClick={nextDay}
           className="p-1 text-brand hover:bg-brand-subtle rounded transition-colors"
-          title="יום הבא"
+          title={labels.CAL_NAV_NEXT_DAY}
         >
           <svg
             className="w-5 h-5"
@@ -99,7 +101,7 @@ export default function DateNavigator() {
           >
             <span className="font-bold text-[17px] text-text-primary leading-none tracking-tight">
               {isRange
-                ? `מציג תאריכים: ${rangeFormatted}`
+                ? `${labels.CAL_NAV_SHOWING_DATES} ${rangeFormatted}`
                 : toDisplayDate(selectedDate)}
             </span>
 

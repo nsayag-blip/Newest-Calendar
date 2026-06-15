@@ -10,6 +10,7 @@ import {
 } from "../../../types/engine";
 import { calculatePositions } from "../engine/gridEngine";
 import { useCalendarStore } from "../../../store/appStore";
+import { useLabels } from "../../../hooks/useLabels";
 import { getGridMetrics } from "../engine/gridMetrics";
 
 import HorizontalRow from "./HorizontalRow";
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const HorizontalCanvas = memo(({ columns, groups, blocks, config }: Props) => {
+  const labels = useLabels();
   const { timeDensity } = useCalendarStore();
   const { hourHeightPx: hourWidthPx } = getGridMetrics(timeDensity);
 
@@ -57,10 +59,10 @@ const HorizontalCanvas = memo(({ columns, groups, blocks, config }: Props) => {
         {/* Pinned corner: date col + resource col */}
         <div className="sticky start-0 z-[70] flex w-[260px] flex-shrink-0 border-e border-border bg-surface-alt">
           <div className="w-[80px] border-e border-border p-3 font-bold text-sm text-text-primary text-center">
-            תאריך
+            {labels.CAL_HORIZONTAL_DATE}
           </div>
           <div className="flex-1 p-3 font-bold text-sm text-text-primary">
-            עובד, חדר
+            {labels.CAL_HORIZONTAL_WORKER_ROOM}
           </div>
         </div>
 
@@ -105,7 +107,7 @@ const HorizontalCanvas = memo(({ columns, groups, blocks, config }: Props) => {
 
         {activeGroups.length === 0 && (
           <div className="sticky start-0 w-full flex items-center justify-center p-10 text-text-muted font-medium">
-            אין נתונים להצגה
+            {labels.CAL_GENERAL_NO_DATA}
           </div>
         )}
       </div>

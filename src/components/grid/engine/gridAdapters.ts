@@ -10,9 +10,10 @@ import {
   SHIFT_STATUS_BG,
   SHIFT_STATUS_BORDER,
   APPOINTMENT_STATUS_BG,
-  SHIFT_STATUS_LABEL,
-  APPOINTMENT_STATUS_LABEL,
-} from "../../../constants/theme"; 
+  SHIFT_STATUS_LABEL_KEY,
+  APPOINTMENT_STATUS_LABEL_KEY,
+} from "../../../constants/theme";
+import type { Labels } from "../../../constants/labels";
 
 import { decodeHtml } from "../../../utils/string";
 
@@ -36,9 +37,19 @@ const formatTimeRange = (start: string | Date, end: string | Date): string => {
   };
   return `${fmt(start)} – ${fmt(end)}`;
 };
-const formatResourceLabel = (resource: ServiceResource | undefined): string => {
-  if (!resource) return "צוות רפואי";
+const formatResourceLabel = (
+  resource: ServiceResource | undefined,
+  labels: Labels,
+): string => {
+  if (!resource) return labels.CAL_GRID_DEFAULT_RESOURCE;
   return `${resource.Name}`;
+};
+
+// "חדר 3" style room label, using the (overridable) room prefix label.
+const formatRoomLabel = (room: ServiceTerritory | undefined, roomId: string, labels: Labels): string => {
+  const prefix = labels.CAL_GRID_ROOM_PREFIX;
+  if (room?.Room_Number__c) return `${prefix} ${room.Room_Number__c}`;
+  return room?.Name ?? `${prefix} ${roomId}`;
 };
 
 // ── Room + Doctor resolution ──────────────────────────────
@@ -52,26 +63,25 @@ const getAppointmentDoctorId = (appt: ServiceAppointment): string | null =>
 
 // ── Display Factories ─────────────────────────────────────
 
-const buildShiftDisplay = (shift: Shift, resource?: ServiceResource) => {
-  console.log("Building display for shift:", shift);
-  const statusLabel = SHIFT_STATUS_LABEL[shift.Status] ?? shift.Status;
+const buildShiftDisplay = (shift: Shift, labels: Labels, resource?: ServiceResource) => {
+  const statusLabel = labels[SHIFT_STATUS_LABEL_KEY[shift.Status]] ?? shift.Status;
   const timeStr = formatTimeRange(shift.StartTime, shift.EndTime);
 
   return {
-    title: formatResourceLabel(resource) , 
-    //id: shift.Id, // testing things needs to be removed
-    subtitle: `${SHIFT_STATUS_LABEL[shift.Status] ?? shift.Status} · ${formatTimeRange(shift.StartTime, shift.EndTime)}`,
-    timeRange : timeStr,
-    statusText : statusLabel,
+    title: formatResourceLabel(resource, labels),
+    subtitle: `${statusLabel} · ${timeStr}`,
+    timeRange: timeStr,
+    statusText: statusLabel,
     bgColor: shift.BackgroundColor ?? SHIFT_STATUS_BG[shift.Status] ?? "#F3F2F2",
     borderColor: SHIFT_STATUS_BORDER[shift.Status] ?? "#DDDBDA",
   };
 };
 
-const buildAppointmentDisplay = (appt: ServiceAppointment) => {
+const buildAppointmentDisplay = (appt: ServiceAppointment, labels: Labels) => {
+  const statusLabel = labels[APPOINTMENT_STATUS_LABEL_KEY[appt.Status]] ?? appt.Status;
   return {
-    title: appt.Description ?? appt.Subject ?? "תור חולה",
-    subtitle: `${APPOINTMENT_STATUS_LABEL[appt.Status] ?? appt.Status} · ${formatTimeRange(appt.SchedStartTime, appt.SchedEndTime)}`,
+    title: appt.Description ?? appt.Subject ?? labels.CAL_GRID_DEFAULT_APPOINTMENT,
+    subtitle: `${statusLabel} · ${formatTimeRange(appt.SchedStartTime, appt.SchedEndTime)}`,
     bgColor: APPOINTMENT_STATUS_BG[appt.Status] ?? "#FFFFFF",
     borderColor: APPOINTMENT_STATUS_BG[appt.Status] ?? "#9E9E9E",
   };
@@ -93,9 +103,10 @@ export const adaptToShiftMode = (
   rooms: ServiceTerritory[],
   resources: ServiceResource[],
   date: string,
+  labels: Labels,
 ) => {
 
-  const resourceMap = new Map(resources.map((r) => [r.Id, r])); 
+  const resourceMap = new Map(resources.map((r) => [r.Id, r]));
 
   const todaysShifts = shifts.filter(
     (s) => getLocalDateString(s.StartTime) === date,
@@ -104,7 +115,7 @@ export const adaptToShiftMode = (
   // All rooms are always shown as columns — even ones with no shifts today.
   // This is intentional: empty columns tell staff that a room is available.
   const columns: EngineColumn[] = rooms.map((room) => {
-    const headerLabel = `חדר ${decodeHtml(room.Room_Number__c?.toString() ?? "")}`;
+    const headerLabel = `${labels.CAL_GRID_ROOM_PREFIX} ${decodeHtml(room.Room_Number__c?.toString() ?? "")}`;
     return {
       id: `room_${room.Id}`,
       date,
@@ -120,9 +131,8 @@ export const adaptToShiftMode = (
     endMinutes: extractMinutes(shift.EndTime),
     itemType: "shift",
     payload: shift,
-    display: buildShiftDisplay(shift, resourceMap.get(shift.ServiceResourceId)),
+    display: buildShiftDisplay(shift, labels, resourceMap.get(shift.ServiceResourceId)),
   }));
-  console.log("First EngineBlock:", blocks[0]);
   return { columns, blocks };
 };
 
@@ -134,6 +144,7 @@ export const adaptToAppointmentMode = (
   rooms: ServiceTerritory[],
   resources: ServiceResource[],
   date: string,
+  labels: Labels,
 ) => {
   const todaysShifts = shifts.filter(
     (s) => getLocalDateString(s.StartTime) === date,
@@ -154,14 +165,12 @@ export const adaptToAppointmentMode = (
     const comboId = `combo_${roomId}_${doctorId}`;
     if (!columnsMap.has(comboId)) {
       const room = roomMap.get(roomId);
-      const roomName = room?.Room_Number__c
-        ? `חדר ${room.Room_Number__c}`
-        : (room?.Name ?? `חדר ${roomId}`);
+      const roomName = formatRoomLabel(room, roomId, labels);
       const resource = resourceMap.get(doctorId);
       columnsMap.set(comboId, {
         id: comboId,
         date,
-        headerLabel: `${formatResourceLabel(resource)}, ${roomName}`,
+        headerLabel: `${formatResourceLabel(resource, labels)}, ${roomName}`,
         isHighlight: false,
       });
     }
@@ -180,7 +189,7 @@ export const adaptToAppointmentMode = (
         endMinutes: extractMinutes(appt.SchedEndTime),
         itemType: "appointment" as const,
         payload: appt,
-        display: buildAppointmentDisplay(appt),
+        display: buildAppointmentDisplay(appt, labels),
       };
     })
     // Only keep appointments that belong to a shift column we built above.
@@ -202,12 +211,13 @@ export const adaptToRangeMode = (
   appMode: "shift" | "appointment",
   rooms: ServiceTerritory[],
   resources: ServiceResource[],
+  labels: Labels,
 ) => {
   const roomMap = new Map(rooms.map((r) => [r.Id, r]));
   const resourceMap = new Map(resources.map((r) => [r.Id, r]));
 
   const groupsMap = new Map<string, RangeGroup>();
-  const blocks: EngineBlock<any>[] = [];
+  const blocks: EngineBlock<Shift | ServiceAppointment>[] = [];
 
   // O(1) Lookup Set to replace the slow Array.find()
   const existingColumnIds = new Set<string>();
@@ -236,24 +246,18 @@ export const adaptToRangeMode = (
 
     if (!roomId) return;
 
-    let colId = "";
-    let subLabel = "";
+    let colId: string;
+    let subLabel: string;
 
     if (appMode === "shift") {
       colId = `range_${dateStr}_room_${roomId}`;
-      const room = roomMap.get(roomId);
-      subLabel = room?.Room_Number__c
-        ? `חדר ${room.Room_Number__c}`
-        : (room?.Name ?? `חדר ${roomId}`);
+      subLabel = formatRoomLabel(roomMap.get(roomId), roomId, labels);
     } else {
       if (!doctorId) return;
       colId = `range_${dateStr}_room_${roomId}_doc_${doctorId}`;
-      const room = roomMap.get(roomId);
-      const rName = room?.Room_Number__c
-        ? `חדר ${room.Room_Number__c}`
-        : (room?.Name ?? `חדר ${roomId}`);
+      const rName = formatRoomLabel(roomMap.get(roomId), roomId, labels);
       const resource = resourceMap.get(doctorId);
-      subLabel = `${formatResourceLabel(resource)}, ${rName}`;
+      subLabel = `${formatResourceLabel(resource, labels)}, ${rName}`;
     }
 
     // Create Group if it doesn't exist
@@ -283,9 +287,10 @@ export const adaptToRangeMode = (
     const display = isShift
       ? buildShiftDisplay(
           item as Shift,
+          labels,
           resourceMap.get((item as Shift).ServiceResourceId),
         )
-      : buildAppointmentDisplay(item as ServiceAppointment);
+      : buildAppointmentDisplay(item as ServiceAppointment, labels);
 
     blocks.push({
       id: isShift ? (item as Shift).Id : (item as ServiceAppointment).Id,

@@ -1,4 +1,5 @@
 // src/components/ui/DensityControl.tsx
+import { useLabels } from "../../hooks/useLabels";
 
 // ── Types ─────────────────────────────────────────────────
 
@@ -32,6 +33,7 @@ export function DensityControl<T extends number>({
   onChange,
   className = "",
 }: DensityControlProps<T>) {
+  const labels = useLabels();
   const currentIndex = options.indexOf(value);
 
   const stepDown = () => {
@@ -63,7 +65,7 @@ export function DensityControl<T extends number>({
       </span>
 
       {/* Step down (−) */}
-      <StepButton onClick={stepDown} disabled={isMin} label="הפחת" dir="down" />
+      <StepButton onClick={stepDown} disabled={isMin} label={labels.CAL_STEPPER_DECREASE} dir="down" />
 
       {/* Value + unit label */}
       <div
@@ -80,7 +82,7 @@ export function DensityControl<T extends number>({
       </div>
 
       {/* Step up (+) */}
-      <StepButton onClick={stepUp} disabled={isMax} label="הוסף" dir="up" />
+      <StepButton onClick={stepUp} disabled={isMax} label={labels.CAL_STEPPER_INCREASE} dir="up" />
     </div>
   );
 }

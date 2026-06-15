@@ -2,10 +2,12 @@
 import { useCalendarStore } from "../../store/appStore";
 import { useSession } from "../../hooks/useSession";
 import { useUserClinics } from "../../hooks/useUserClinics";
+import { useLabels } from "../../hooks/useLabels";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/Popover";
 
 export default function ClinicDropdown() {
   const { activeClinicId, setActiveClinicId } = useCalendarStore();
+  const labels = useLabels();
 
   // 1. Pull from the React Query cache (zero network cost!)
   const { data: userContext } = useSession();
@@ -18,13 +20,13 @@ export default function ClinicDropdown() {
   const activeClinic = activeMappedClinic?.clinic;
 
   const displayLabel = isLoadingClinics
-    ? "טוען..."
-    : activeClinic?.Name || "בחר מרפאה";
+    ? labels.CAL_GENERAL_LOADING_SHORT
+    : activeClinic?.Name || labels.CAL_CLINIC_CHOOSE;
 
   return (
     <div className="flex flex-col items-start">
       <span className="text-[10px] font-bold text-text-muted mb-0.5 pe-1 tracking-wide">
-        מרפאה נוכחית
+        {labels.CAL_CLINIC_CURRENT}
       </span>
 
       <Popover>
@@ -59,7 +61,7 @@ export default function ClinicDropdown() {
           >
             {availableClinics.length === 0 && !isLoadingClinics && (
               <div className="px-3 py-2 text-sm text-text-muted">
-                אין מרפאות זמינות
+                {labels.CAL_CLINIC_NONE_AVAILABLE}
               </div>
             )}
 
@@ -87,7 +89,7 @@ export default function ClinicDropdown() {
                     {/* Visual indicator for View-Only access */}
                     {isViewOnly && (
                       <span className="text-[10px] text-amber-700 mt-0.5 pe-2">
-                        (צפייה בלבד)
+                        {labels.CAL_CLINIC_VIEW_ONLY_PAREN}
                       </span>
                     )}
                   </div>

@@ -20,6 +20,7 @@
 // src/App.tsx
 import { useSession } from "./hooks/useSession";
 import { useUserClinics } from "./hooks/useUserClinics";
+import { useLabels } from "./hooks/useLabels";
 import { useCalendarStore } from "./store/appStore";
 import ClinicSelector from "./components/clinicSelector/ClinicSelector";
 import CalendarApp from "./CalendarApp";
@@ -28,9 +29,9 @@ export default function App() {
   const {
     data: userContext,
     isLoading: loadingSession,
-    isError,
   } = useSession();
   const { availableClinics, isLoadingClinics } = useUserClinics(userContext);
+  const labels = useLabels();
   const activeClinicId = useCalendarStore((state) => state.activeClinicId);
 
   console.log("User Context:", userContext);
@@ -41,7 +42,7 @@ export default function App() {
     return (
       <div className="w-screen h-screen flex flex-col items-center justify-center bg-surface-alt font-sans">
         <div className="w-12 h-12 border-4 border-brand border-t-transparent rounded-full animate-spin"></div>
-        <p className="mt-4 text-text-secondary font-medium">טוען נתונים</p>
+        <p className="mt-4 text-text-secondary font-medium">{labels.CAL_GENERAL_LOADING}</p>
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { parse } from "date-fns";
 import { HDate } from "@hebcal/hdate";
 import { useCalendarStore } from "../../store/appStore";
+import { useLabels } from "../../hooks/useLabels";
 import DateNavigator from "./DateNavigator";
 import ClinicDropdown from "./ClinicDropdown";
 import ModeToggle from "../ui/ModeToggle";
@@ -18,6 +19,7 @@ function Divider() {
 
 function HebrewDateToggle({ selectedDate }: { selectedDate: string }) {
   const { showHebrewDate, toggleHebrewDate } = useCalendarStore();
+  const labels = useLabels();
 
   const hebrewDateStr = useMemo(() => {
     const dateObj = parse(selectedDate, "yyyy-MM-dd", new Date());
@@ -30,15 +32,17 @@ function HebrewDateToggle({ selectedDate }: { selectedDate: string }) {
       <Toggle
         checked={showHebrewDate}
         onChange={() => {
+
           // TEST: action-path check — handler error → toast, no blank screen. Remove this block.
           try {
             throw new Error("test");
           } catch (err) {
             notify.error(getErrorMessage(err, "בדיקה: שגיאה בהחלפת תאריך עברי"));
           }
+          
           toggleHebrewDate();
         }}
-        label="תאריך עברי"
+        label={labels.CAL_TOPBAR_HEBREW_DATE}
         labelSide="right"
       />
       {showHebrewDate && (
@@ -64,14 +68,15 @@ function LeftSection({ selectedDate }: { selectedDate: string }) {
 
 function RightSection() {
   const { appMode, setAppMode } = useCalendarStore();
+  const labels = useLabels();
 
   return (
     <ModeToggle<"shift" | "appointment">
       value={appMode}
       onChange={setAppMode}
       options={[
-        { value: "appointment", label: "יומן תורים" },
-        { value: "shift", label: "יומן משמרות" },
+        { value: "appointment", label: labels.CAL_MODE_APPOINTMENTS },
+        { value: "shift", label: labels.CAL_MODE_SHIFTS },
       ]}
     />
   );
