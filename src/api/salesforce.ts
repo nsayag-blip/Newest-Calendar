@@ -9,11 +9,15 @@ import {
   WorkType,
 } from "../types/sf";
 import { UserContext } from "@/types/user";
+import { LabelMap } from "../constants/labels";
 
 const CONTROLLER = "Calendar_Ctrl";
 
 export const CalendarApi = {
- 
+  // Custom Labels keyed by API name.
+  getLabels(): Promise<LabelMap> {
+    return invokeRemote<LabelMap>(`${CONTROLLER}.getLabels`);
+  },
 
   getRooms(clinicId: string): Promise<ServiceTerritory[]> {
     return invokeRemote<ServiceTerritory[]>(`${CONTROLLER}.getRooms`, clinicId);

@@ -1,5 +1,6 @@
 // src/components/ui/FilterDropdown.tsx
 import { Popover, PopoverTrigger, PopoverContent } from "./Popover";
+import { useLabels } from "../../hooks/useLabels";
 
 // ── Types ─────────────────────────────────────────────────
 
@@ -27,6 +28,7 @@ export function FilterDropdown({
     onClear,
     className = "",
 }: FilterDropdownProps) {
+    const labels = useLabels();
     const hasSelection = selectedIds.length > 0;
     const countLabel = hasSelection ? ` (${selectedIds.length})` : "";
 
@@ -85,7 +87,7 @@ export function FilterDropdown({
                 >
                     {options.length === 0 && (
                         <div className="px-3 py-3 text-sm text-[var(--color-text-muted)] text-center">
-                            אין אפשרויות
+                            {labels.CAL_FILTER_NO_OPTIONS}
                         </div>
                     )}
 
@@ -148,7 +150,7 @@ export function FilterDropdown({
                             onClick={onClear}
                             className="text-xs font-semibold text-[var(--color-destructive)] hover:underline"
                         >
-                            נקה בחירה
+                            {labels.CAL_FILTER_CLEAR_SELECTION}
                         </button>
                     </div>
                 )}

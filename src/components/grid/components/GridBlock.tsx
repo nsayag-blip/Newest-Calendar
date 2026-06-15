@@ -112,8 +112,10 @@
 // src/components/grid/components/GridBlock.tsx
 import { memo } from "react";
 import { RenderableBlock } from "../../../types/engine";
+import { useLabels } from "../../../hooks/useLabels";
 
 const ShiftCard = ({ block }: { block: RenderableBlock<any> }) => {
+  const labels = useLabels();
   const { title, statusText, timeRange } = block.display;
 
   return (
@@ -134,7 +136,7 @@ const ShiftCard = ({ block }: { block: RenderableBlock<any> }) => {
       <div className="flex flex-col items-start justify-start flex-1 p-3 gap-0.5">
         {/* Decreased from text-lg to text-sm */}
         <span className="font-bold text-sm leading-none">
-          {statusText || "פעילה"}
+          {statusText || labels.CAL_BLOCK_ACTIVE}
         </span>
 
         {/* Decreased from text-sm to text-xs */}

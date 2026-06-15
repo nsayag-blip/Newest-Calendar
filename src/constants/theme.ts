@@ -1,6 +1,7 @@
 // src/constants/theme.ts
 import type { ShiftStatus, ShiftType, AppointmentStatus } from "../types/sf";
 import type { TimeDensity, ColumnDensity } from "../types/calendar";
+import type { LabelKey } from "./labels";
 
 // ── Shift calendar — block colors by Status ───────────────
 
@@ -16,10 +17,11 @@ export const SHIFT_STATUS_BORDER: Record<ShiftStatus, string> = {
   Tentative: "#F9A825",  // amber
 };
 
-export const SHIFT_STATUS_LABEL: Record<ShiftStatus, string> = {
-  Published: "Published",
-  Confirmed: "Confirmed",
-  Tentative: "Tentative",
+// Status/type → label key. The text lives in labels.ts; look up via useLabels().
+export const SHIFT_STATUS_LABEL_KEY: Record<ShiftStatus, LabelKey> = {
+  Published: "CAL_SHIFT_STATUS_PUBLISHED",
+  Confirmed: "CAL_SHIFT_STATUS_CONFIRMED",
+  Tentative: "CAL_SHIFT_STATUS_TENTATIVE",
 };
 
 // ── Appointment calendar — shift background colors ────────
@@ -44,14 +46,21 @@ export const APPOINTMENT_STATUS_BG: Record<AppointmentStatus, string> = {
   standby: "#E1BEE7",  // purple
 };
 
-export const APPOINTMENT_STATUS_LABEL: Record<AppointmentStatus, string> = {
-  Scheduled: "נקבע",
-  active: "פעיל",
-  examination: "בדיקה",
-  lab_returned: "עבודה חזרה ממעבדה",
-  cancelled: "בוטל",
-  blocker: "חסימה",
-  standby: "רשימת המתנה",
+export const APPOINTMENT_STATUS_LABEL_KEY: Record<AppointmentStatus, LabelKey> = {
+  Scheduled: "CAL_APPT_STATUS_SCHEDULED",
+  active: "CAL_APPT_STATUS_ACTIVE",
+  examination: "CAL_APPT_STATUS_EXAMINATION",
+  lab_returned: "CAL_APPT_STATUS_LAB_RETURNED",
+  cancelled: "CAL_APPT_STATUS_CANCELLED",
+  blocker: "CAL_APPT_STATUS_BLOCKER",
+  standby: "CAL_APPT_STATUS_STANDBY",
+};
+
+export const SHIFT_TYPE_LABEL_KEY: Record<ShiftType, LabelKey> = {
+  Regular: "CAL_SHIFT_TYPE_REGULAR",
+  injections: "CAL_SHIFT_TYPE_INJECTIONS",
+  whitening: "CAL_SHIFT_TYPE_WHITENING",
+  first_aid: "CAL_SHIFT_TYPE_FIRST_AID",
 };
 
 // ── Time density options ──────────────────────────────────

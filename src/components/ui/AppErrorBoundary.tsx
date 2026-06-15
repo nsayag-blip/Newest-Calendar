@@ -1,7 +1,7 @@
 import { ErrorBoundary } from "react-error-boundary";
 import type { ReactNode } from "react";
 import { getErrorMessage } from "../../utils/errors";
-import { MESSAGES } from "../../constants/messages";
+import { getLabel } from "../../hooks/useLabels";
 import { notify } from "../../utils/notifications";
 
 function BlankScreen() {
@@ -14,7 +14,7 @@ type AppErrorBoundaryProps = {
   message?: string;
 };
 
-export function AppErrorBoundary({children, message = MESSAGES.LOAD_DATA_ERROR,}: AppErrorBoundaryProps) {
+export function AppErrorBoundary({children, message = getLabel("CAL_ERR_LOAD_DATA"),}: AppErrorBoundaryProps) {
   return (
     <ErrorBoundary
       FallbackComponent={BlankScreen}

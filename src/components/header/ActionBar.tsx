@@ -5,10 +5,12 @@ import {
   COLUMN_DENSITY_OPTIONS,
 } from "../../constants/theme";
 import type { TimeDensity, ColumnDensity } from "../../types/calendar";
+import { useLabels } from "../../hooks/useLabels";
 import Button from "../ui/Button";
 import DensityControl from "../ui/DensityControl";
 
 export default function ActionBar() {
+  const labels = useLabels();
   const {
     appMode,
     viewType,
@@ -22,7 +24,10 @@ export default function ActionBar() {
   } = useCalendarStore();
 
   const isRange = viewType === "range";
-  const primaryActionText = appMode === "shift" ? "יצירת משמרת" : "קביעת תור";
+  const primaryActionText =
+    appMode === "shift"
+      ? labels.CAL_ACTION_CREATE_SHIFT
+      : labels.CAL_ACTION_CREATE_APPOINTMENT;
 
   return (
     <div className="flex items-center justify-between px-6 h-12 bg-white border-b border-border">
@@ -44,7 +49,7 @@ export default function ActionBar() {
             >
               <path d="M440 70h-50V50a30 30 0 1 0-60 0v20H190V50a30 30 0 1 0-60 0v20H80a40 40 0 0 0-40 40v25c0 8 7 15 15 15h410c8 0 15-7 15-15v-25a40 40 0 0 0-40-40m25 130H55c-8 0-15 7-15 15v245a40 40 0 0 0 40 40h360a40 40 0 0 0 40-40V215c0-8-7-15-15-15M290 420v2c0 8-10 18-20 18s-20-10-20-20V320l-15 16c-3 3-6 4-10 4-8 0-15-7-15-15 0-4 2-8 5-11l39-39a20 20 0 0 1 15-6c11 0 21 9 21 20z" />
             </svg>
-            יום
+            {labels.CAL_VIEW_DAY}
           </button>
 
           <button
@@ -68,7 +73,7 @@ export default function ActionBar() {
                 d="M4 6h16M4 12h16M4 18h7"
               />
             </svg>
-            ציר זמן
+            {labels.CAL_VIEW_TIMELINE}
           </button>
         </div>
 
@@ -90,7 +95,7 @@ export default function ActionBar() {
               />
             </svg>
           }
-          unit="חדרים"
+          unit={labels.CAL_UNIT_ROOMS}
           options={COLUMN_DENSITY_OPTIONS}
           value={columnDensity}
           onChange={(value) => setColumnDensity(value as ColumnDensity)}
@@ -112,7 +117,7 @@ export default function ActionBar() {
               />
             </svg>
           }
-          unit="דק'"
+          unit={labels.CAL_UNIT_MINUTES}
           options={TIME_DENSITY_OPTIONS}
           value={timeDensity}
           onChange={(value) => setTimeDensity(value as TimeDensity)}
@@ -138,7 +143,7 @@ export default function ActionBar() {
               </svg>
             }
             onClick={toggleFilterTray}
-            aria-label="הצג מסננים"
+            aria-label={labels.CAL_ACTION_SHOW_FILTERS}
           />
           <Button
             type="button"
@@ -156,7 +161,7 @@ export default function ActionBar() {
                 <path d="M26 2a24 24 0 1 0 0 48 24 24 0 1 0 0-48m0 42C16 44 8 36 8 26S16 8 26 8s18 8 18 18-8 18-18 18m0-29.9c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3m5 21c0 .5-.4.9-1 .9h-8c-.5 0-1-.3-1-.9v-2c0-.5.4-1.1 1-1.1.5 0 1-.3 1-.9v-4c0-.5-.4-1.1-1-1.1-.5 0-1-.3-1-.9v-2c0-.5.4-1.1 1-1.1h6c.5 0 1 .5 1 1.1v8c0 .5.4.9 1 .9.5 0 1 .5 1 1.1z" />
               </svg>
             }
-            aria-label="הצג מקרא"
+            aria-label={labels.CAL_ACTION_SHOW_LEGEND}
           />
         </div>
       </div>
@@ -165,7 +170,7 @@ export default function ActionBar() {
         <button
           type="button"
           className="flex items-center justify-center text-[#747474] hover:text-text-primary transition-colors"
-          aria-label="רענן נתונים"
+          aria-label={labels.CAL_ACTION_REFRESH}
         >
           <svg
             className="w-5 h-5"

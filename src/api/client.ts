@@ -17,6 +17,7 @@ import {
 } from "../data/mockSalesforce";
 import { CalendarApi } from "./salesforce";
 import { UserContext } from "@/types/user";
+import { LABEL_DEFAULTS, type LabelMap } from "../constants/labels";
 
 const IS_LOCAL_DEV = false;
 
@@ -24,6 +25,11 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const salesforceApi = {
 
+  async getLabels(): Promise<LabelMap> {
+    if (!IS_LOCAL_DEV) return CalendarApi.getLabels();
+    await delay(100);
+    return LABEL_DEFAULTS;
+  },
 
   async getRooms(clinicId?: string): Promise<ServiceTerritory[]> {
     if (!IS_LOCAL_DEV && clinicId) return CalendarApi.getRooms(clinicId);
@@ -96,10 +102,10 @@ export const salesforceApi = {
       try {
         const data = await CalendarApi.getCurrentUser();
         // This log will print the exact JSON payload your Apex controller built!
-        console.log("🌐 [API] Real Salesforce UserContext Returned:", JSON.parse(JSON.stringify(data)));
+        console.log("Real Salesforce UserContext Returned:", JSON.parse(JSON.stringify(data)));
         return data;
       } catch (err) {
-        console.error("🌐 [API] Real Salesforce ERROR:", err);
+        console.error("Real Salesforce ERROR:", err);
         throw err;
       }
     }
@@ -129,16 +135,16 @@ export const salesforceApi = {
 
   // Inside src/api/client.ts
   async getAllClinics(): Promise<any[]> {
-    console.log("🌐 [API] getAllClinics requested...");
+    console.log("getAllClinics requested...");
 
     if (!IS_LOCAL_DEV) {
       // If hitting real Salesforce:
       try {
         const data = await CalendarApi.getAllClinics();
-        console.log("🌐 [API] Real Salesforce returned:", data);
+        console.log("Real Salesforce returned:", data);
         return data;
       } catch (err) {
-        console.error("🌐 [API] Real Salesforce ERROR:", err);
+        console.error("Real Salesforce ERROR:", err);
         throw err;
       }
     }
@@ -163,7 +169,7 @@ export const salesforceApi = {
       }
     ];
 
-    console.log("🌐 [API] Local Mock returned:", mockData);
+    console.log("Local Mock returned:", mockData);
     return mockData;
   },
 };

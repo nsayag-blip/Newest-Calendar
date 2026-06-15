@@ -3,11 +3,13 @@ import { Popover, PopoverTrigger, PopoverContent } from "./Popover";
 import {
   SHIFT_STATUS_BG,
   SHIFT_STATUS_BORDER,
-  SHIFT_STATUS_LABEL,
+  SHIFT_STATUS_LABEL_KEY,
   APPOINTMENT_STATUS_BG,
-  APPOINTMENT_STATUS_LABEL,
+  APPOINTMENT_STATUS_LABEL_KEY,
   SHIFT_TYPE_BG,
+  SHIFT_TYPE_LABEL_KEY,
 } from "../../constants/theme";
+import { useLabels } from "../../hooks/useLabels";
 
 // ── Types ─────────────────────────────────────────────────
 
@@ -63,6 +65,7 @@ function LegendRow({ bg, border, label }: LegendRowProps) {
 // Extracted so it can carry its own active state styling
 
 function LegendTrigger() {
+  const labels = useLabels();
   return (
     <button
       type="button"
@@ -81,8 +84,8 @@ function LegendTrigger() {
         focus-visible:outline-2 focus-visible:outline-offset-2
         focus-visible:outline-[var(--color-brand)]
       `}
-      title="מקרא צבעים"
-      aria-label="פתח מקרא צבעים"
+      title={labels.CAL_LEGEND_TITLE}
+      aria-label={labels.CAL_LEGEND_OPEN}
     >
       <svg
         className="w-4 h-4"
@@ -104,6 +107,7 @@ function LegendTrigger() {
 // ── Main Component ────────────────────────────────────────
 
 export function LegendPanel({ appMode }: LegendPanelProps) {
+  const labels = useLabels();
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -118,26 +122,26 @@ export function LegendPanel({ appMode }: LegendPanelProps) {
           {/* Header */}
           <div>
             <p className="text-base font-bold text-[var(--color-text-primary)]">
-              מקרא צבעים
+              {labels.CAL_LEGEND_TITLE}
             </p>
             <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
-              {appMode === "shift" ? "יומן משמרות" : "יומן תורים"}
+              {appMode === "shift" ? labels.CAL_MODE_SHIFTS : labels.CAL_MODE_APPOINTMENTS}
             </p>
           </div>
 
           {/* ── Shift calendar legend ── */}
           {appMode === "shift" && (
-            <LegendSection title="סטטוס משמרת">
+            <LegendSection title={labels.CAL_FILTER_SHIFT_STATUS}>
               {(
-                Object.keys(SHIFT_STATUS_LABEL) as Array<
-                  keyof typeof SHIFT_STATUS_LABEL
+                Object.keys(SHIFT_STATUS_LABEL_KEY) as Array<
+                  keyof typeof SHIFT_STATUS_LABEL_KEY
                 >
               ).map((status) => (
                 <LegendRow
                   key={status}
                   bg={SHIFT_STATUS_BG[status] ?? "#FFFFFF"}
                   border={SHIFT_STATUS_BORDER[status] ?? "#9E9E9E"}
-                  label={SHIFT_STATUS_LABEL[status]}
+                  label={labels[SHIFT_STATUS_LABEL_KEY[status]]}
                 />
               ))}
             </LegendSection>
@@ -146,22 +150,22 @@ export function LegendPanel({ appMode }: LegendPanelProps) {
           {/* ── Appointment calendar legend ── */}
           {appMode === "appointment" && (
             <>
-              <LegendSection title="סטטוס תור">
+              <LegendSection title={labels.CAL_LEGEND_APPT_STATUS}>
                 {(
-                  Object.keys(APPOINTMENT_STATUS_LABEL) as Array<
-                    keyof typeof APPOINTMENT_STATUS_LABEL
+                  Object.keys(APPOINTMENT_STATUS_LABEL_KEY) as Array<
+                    keyof typeof APPOINTMENT_STATUS_LABEL_KEY
                   >
                 ).map((status) => (
                   <LegendRow
                     key={status}
                     bg={APPOINTMENT_STATUS_BG[status] ?? "#FFFFFF"}
                     border={APPOINTMENT_STATUS_BG[status] ?? "#9E9E9E"}
-                    label={APPOINTMENT_STATUS_LABEL[status]}
+                    label={labels[APPOINTMENT_STATUS_LABEL_KEY[status]]}
                   />
                 ))}
               </LegendSection>
 
-              <LegendSection title="סוג משמרת">
+              <LegendSection title={labels.CAL_LEGEND_SHIFT_TYPE}>
                 {(
                   Object.keys(SHIFT_TYPE_BG) as Array<
                     keyof typeof SHIFT_TYPE_BG
@@ -171,7 +175,7 @@ export function LegendPanel({ appMode }: LegendPanelProps) {
                     key={type}
                     bg={SHIFT_TYPE_BG[type]}
                     border={SHIFT_TYPE_BG[type]}
-                    label={type}
+                    label={labels[SHIFT_TYPE_LABEL_KEY[type]]}
                   />
                 ))}
               </LegendSection>

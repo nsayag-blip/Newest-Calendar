@@ -3,6 +3,7 @@ import { memo, useMemo } from "react";
 import { EngineColumn, EngineBlock, GridConfig } from "../../../types/engine";
 import { calculatePositions } from "../engine/gridEngine";
 import { useCalendarStore } from "../../../store/appStore";
+import { useLabels } from "../../../hooks/useLabels";
 import { getGridMetrics } from "../engine/gridMetrics";
 
 import GridColumn from "./GridColumn";
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const DayCanvas = memo(({ columns, blocks, config }: Props) => {
+  const labels = useLabels();
   // 1. Pull BOTH densities from the store
   const { columnDensity, timeDensity } = useCalendarStore();
 
@@ -78,7 +80,7 @@ const DayCanvas = memo(({ columns, blocks, config }: Props) => {
 
         {columns.length === 0 && (
           <div className="flex-1 flex items-center justify-center text-text-muted font-medium">
-            אין עמודות להצגה
+            {labels.CAL_GENERAL_NO_COLUMNS}
           </div>
         )}
       </div>

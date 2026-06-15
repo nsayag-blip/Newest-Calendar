@@ -15,13 +15,13 @@ import {
   setYear,
 } from "date-fns";
 import { he } from "date-fns/locale";
+import { useLabels } from "../../hooks/useLabels";
 
 interface Props {
   selected: Date;
   onSelect: (day: Date) => void;
 }
 
-const DAY_LABELS = ["א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש'"];
 const MONTHS = Array.from({ length: 12 }, (_, i) => {
   const d = new Date(2024, i, 1);
   return { value: i, label: format(d, "MMMM", { locale: he }) };
@@ -31,6 +31,8 @@ const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 15 }, (_, i) => currentYear - 5 + i);
 
 export default function CalendarPicker({ selected, onSelect }: Props) {
+  const labels = useLabels();
+  const dayLabels = labels.CAL_PICKER_WEEKDAYS.split("|");
   const [viewMonth, setViewMonth] = useState(startOfMonth(selected));
   const [pickerMode, setPickerMode] = useState<"days" | "months" | "years">(
     "days",
@@ -146,7 +148,7 @@ export default function CalendarPicker({ selected, onSelect }: Props) {
       {pickerMode === "days" && (
         <>
           <div className="grid grid-cols-7 mb-2">
-            {DAY_LABELS.map((d) => (
+            {dayLabels.map((d) => (
               <div
                 key={d}
                 className="text-center text-xs font-semibold text-gray-400 py-1"
@@ -194,7 +196,7 @@ export default function CalendarPicker({ selected, onSelect }: Props) {
               }}
               className="w-full text-xs font-bold text-brand hover:text-brand-hover transition-colors text-center py-1"
             >
-              עבור להיום
+              {labels.CAL_NAV_GO_TODAY}
             </button>
           </div>
         </>

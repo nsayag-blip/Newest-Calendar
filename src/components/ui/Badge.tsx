@@ -1,4 +1,5 @@
 // src/components/ui/Badge.tsx
+import { useLabels } from "../../hooks/useLabels";
 
 // ── Types ─────────────────────────────────────────────────
 
@@ -73,6 +74,7 @@ export function Badge({
     onRemove,
     className = "",
 }: BadgeProps) {
+    const labels = useLabels();
     if (variant === "count") {
         return (
             <span
@@ -108,7 +110,7 @@ export function Badge({
             {onRemove && (
                 <button
                     onClick={onRemove}
-                    aria-label="הסר פילטר"
+                    aria-label={labels.CAL_FILTER_REMOVE}
                     className={`
             flex items-center justify-center
             w-3.5 h-3.5 rounded-full

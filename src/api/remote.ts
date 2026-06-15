@@ -1,4 +1,5 @@
 import { ServerError } from "../utils/errors";
+import { getLabel } from "../hooks/useLabels";
 
 export type RemoteOptions = {
   escape?: boolean;
@@ -29,7 +30,7 @@ export function invokeRemote<T>(
       ...params,
       (result: T, event: { status: boolean; message?: string }) => {
         if (event.status) resolve(result);
-        else reject(new ServerError(event.message ?? 'אירעה שגיאה בשרת.'));
+        else reject(new ServerError(event.message ?? getLabel("CAL_ERR_SERVER")));
       },
       options
     );
