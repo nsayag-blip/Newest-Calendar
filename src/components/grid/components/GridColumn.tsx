@@ -189,7 +189,7 @@ interface Props {
 }
 
 const GridColumn = memo(({ column, blocks, config }: Props) => {
-  const { timeDensity, appMode } = useCalendarStore();
+  const { timeDensity, appMode, openDraftModal } = useCalendarStore();
   const { hourHeightPx, blockHeightPx, pixelsPerMinute } =
     getGridMetrics(timeDensity);
 
@@ -265,10 +265,8 @@ const GridColumn = memo(({ column, blocks, config }: Props) => {
         type: appMode,
       };
 
-      console.log(" Ghost Block Drag-Created:", draftPayload);
-      // alert(
-      //   `יצירת ${appMode === "shift" ? "משמרת" : "תור"} חדש\nחדר: ${draftPayload.columnName}\nהתחלה: ${formatMinutesToTime(start)}\nסיום: ${formatMinutesToTime(end)}`,
-      // );
+      // 🚀 Dispatch data to the global store to trigger the modal!
+      openDraftModal(draftPayload);
 
       // Reset the drag state after releasing
       setDragStartMinutes(null);
@@ -280,6 +278,7 @@ const GridColumn = memo(({ column, blocks, config }: Props) => {
     column.id,
     column.headerLabel,
     appMode,
+    openDraftModal, 
   ]);
 
   const handleMouseLeave = useCallback(() => {

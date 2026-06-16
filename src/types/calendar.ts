@@ -85,6 +85,14 @@ export interface ShiftDropEvent {
   targetColumn: Column;
 }
 
+export interface DraftPayload {
+  columnId: string;
+  columnName: string;
+  startMinutes: number;
+  endMinutes: number;
+  type: AppMode;
+}
+
 // ── Filter state ──────────────────────────────────────────
 
 export interface FilterState {
