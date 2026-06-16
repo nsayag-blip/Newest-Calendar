@@ -7,6 +7,7 @@ import type {
   TimeDensity,
   ColumnDensity,
   FilterState,
+  DraftPayload,
 } from "../types/calendar";
 import {
   TIME_DENSITY_DEFAULT,
@@ -16,7 +17,8 @@ import {
 // ── Pure helpers (no Zustand dependency) ─────────────────
 
 // Utility to toggle an item in an array (add if missing, remove if present)
-const toggleArrayItem = <T>(arr: T[], item: T): T[] => arr.includes(item) ? arr.filter((i) => i !== item) : [...arr, item];
+const toggleArrayItem = <T>(arr: T[], item: T): T[] =>
+  arr.includes(item) ? arr.filter((i) => i !== item) : [...arr, item];
 
 const hasActiveFilters = (filters: FilterState): boolean =>
   filters.resourceIds.length > 0 ||
@@ -64,6 +66,11 @@ interface CalendarState {
   toggleWorkTypeFilter: (workTypeId: string) => void;
   toggleShiftStatusFilter: (status: string) => void;
   clearFilters: () => void;
+
+  // ── Draft Modal State ──
+  draftPayload: DraftPayload | null;
+  openDraftModal: (payload: DraftPayload) => void;
+  closeDraftModal: () => void;
 }
 
 const EMPTY_FILTERS: FilterState = {
@@ -153,4 +160,8 @@ export const useCalendarStore = create<CalendarState>((set) => ({
     }),
 
   clearFilters: () => set({ filters: EMPTY_FILTERS, viewType: "day" }),
+
+  draftPayload: null,
+  openDraftModal: (payload) => set({ draftPayload: payload }),
+  closeDraftModal: () => set({ draftPayload: null }),
 }));
