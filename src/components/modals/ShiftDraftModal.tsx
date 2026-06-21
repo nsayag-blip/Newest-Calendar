@@ -133,51 +133,50 @@ export default function ShiftDraftModal({ isOpen, onClose, payload }: ShiftDraft
             </div>
             <div className="flex flex-col items-start">
               <span className="text-[15px] font-bold text-brand truncate">{payload.columnName}</span>
-              <span className="text-[13px] font-semibold text-brand/80 text-right w-full" dir="ltr">
+              <span className="text-[13px] font-semibold text-brand/80 w-full">
                 {formatMins(payload.startMinutes)} - {formatMins(payload.endMinutes)}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-bold text-text-secondary">מיקום / חדר</label>
-            <input 
-              type="text" 
-              disabled 
-              value={payload.columnName}
-              className="w-full px-3 py-2 bg-surface-alt border border-border rounded-lg text-[13px] font-medium text-text-muted cursor-not-allowed"
-            />
-          </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-bold text-text-secondary">מיקום / חדר</label>
+          <input
+            type="text"
+            disabled
+            value={payload.columnName}
+            className="w-full px-3 py-2 bg-surface-alt border border-border rounded-lg text-[13px] font-medium text-text-muted cursor-not-allowed"
+          />
+        </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-bold text-text-secondary">סוג עבודה</label>
-            <select className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-[13px] font-medium text-text-primary focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-shadow">
-              <option value="regular">רגיל</option>
-              <option value="injections">הזרקות</option>
-              <option value="first_aid">עזרה ראשונה</option>
-            </select>
-          </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-bold text-text-secondary">סוג עבודה</label>
+          <select className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-[13px] font-medium text-text-primary focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-shadow">
+            <option value="regular">רגיל</option>
+            <option value="injections">הזרקות</option>
+            <option value="first_aid">עזרה ראשונה</option>
+          </select>
+        </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-bold text-text-secondary">הערות</label>
-            <textarea 
-              rows={3} 
-              placeholder="הוסף הערות למשמרת..."
-              className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-[13px] font-medium text-text-primary focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-shadow resize-none"
-            />
-          </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-bold text-text-secondary">הערות</label>
+          <textarea
+            rows={3}
+            placeholder="הוסף הערות למשמרת..."
+            className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-[13px] font-medium text-text-primary focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-shadow resize-none"
+          />
         </div>
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="ghost" size="sm" onClick={onClose}>
+        <Button variant="ghost" size="sm" className="rounded-full" onClick={onClose}>
           ביטול
         </Button>
         <Button
           variant="primary"
           size="sm"
+          className="rounded-full"
           icon={<IconSave />}
           onClick={() => { alert("Save functionality coming soon!"); onClose(); }}
         >

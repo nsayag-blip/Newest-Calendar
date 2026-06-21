@@ -107,51 +107,29 @@
 
 
 // src/components/ui/Modal.tsx
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
+import * as Dialog from "@radix-ui/react-dialog";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  className?: string; // Still allows overriding max-width if a future modal needs to be wide
+  className?: string;
 }
 
 export function Modal({ isOpen, onClose, children, className = "max-w-[380px]" }: ModalProps) {
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    if (isOpen) window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  return (
+    <Dialog.Root open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-[var(--z-modal)] bg-black/50" />
 
-  useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "unset";
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
-  return createPortal(
-    <div className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      {/* Click backdrop to close */}
-      <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
-
-      {/* Modal Container */}
-      <div
-        className={`relative bg-surface w-full rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] ${className}`}
-        role="dialog"
-        aria-modal="true"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {children}
-      </div>
-    </div>,
-    document.body,
+        <Dialog.Content
+          className={`fixed z-[var(--z-modal)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-surface w-[calc(100%-2rem)] rounded-[var(--radius-lg)] shadow-[0_2px_16px_rgba(0,0,0,0.16)] flex flex-col overflow-hidden max-h-[90vh] ${className}`}
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
+          {children}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
 
@@ -169,29 +147,32 @@ Modal.Header = function ModalHeader({
   onClose?: () => void;
 }) {
   return (
-    <div className="relative flex flex-col gap-1 px-5 pt-5 pb-4 border-b border-border bg-surface">
+    <div className="relative flex flex-col gap-0.5 px-4 py-3 border-b border-border bg-surface-alt">
       {onClose && (
-        <button
-          onClick={onClose}
-          aria-label="סגור"
-          className="absolute top-5 right-5 flex items-center justify-center w-8 h-8 rounded-full border border-border text-text-muted hover:text-text-primary hover:bg-surface-alt transition-colors"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        <Dialog.Close asChild>
+          <button
+            onClick={onClose}
+            aria-label="סגור"
+            className="absolute top-3 left-3 flex items-center justify-center w-8 h-8 rounded-full border border-border text-text-muted hover:text-text-primary hover:bg-surface-alt transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </Dialog.Close>
       )}
 
-      {/* pr-10 avoids overlapping the absolute X button */}
-      <div className="flex items-center gap-2 pr-10">
-        <h2 className="text-lg font-bold text-text-primary">{title}</h2>
+      <div className="flex items-center gap-2 pl-9">
+        <Dialog.Title className="text-base font-bold text-text-primary leading-snug">
+          {title}
+        </Dialog.Title>
         {badge}
       </div>
 
       {subtitle && (
-        <span className="text-xs text-text-muted pr-10">
+        <Dialog.Description className="text-xs text-text-muted pl-9">
           {subtitle}
-        </span>
+        </Dialog.Description>
       )}
     </div>
   );
@@ -205,15 +186,15 @@ Modal.Body = function ModalBody({
   className?: string;
 }) {
   return (
-    <div className={`p-5 flex flex-col gap-5 overflow-y-auto custom-scrollbar flex-1 ${className}`}>
+    <div className={`p-4 flex flex-col gap-4 overflow-y-auto custom-scrollbar flex-1 ${className}`}>
       {children}
     </div>
   );
 };
 
-Modal.Footer = function ModalFooter({ children }: { children: React.ReactNode }) {
+Modal.Footer = function ModalFooter({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className="px-5 py-4 border-t border-border bg-surface flex items-center justify-between gap-3">
+    <div className={`px-4 py-3 border-t border-border bg-surface-alt flex items-center justify-end gap-2 ${className}`}>
       {children}
     </div>
   );

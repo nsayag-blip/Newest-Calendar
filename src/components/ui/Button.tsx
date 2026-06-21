@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 
 // ── Types ─────────────────────────────────────────────────
 
-type ButtonVariant = "primary" | "secondary" | "ghost" | "destructive";
+type ButtonVariant = "primary" | "secondary" | "ghost" | "destructive" | "destructive-outline";
 type ButtonSize = "sm" | "md" | "lg";
  
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -49,6 +49,14 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
         "border border-[var(--color-destructive)]",
         "hover:bg-[var(--color-destructive-hover)] hover:border-[var(--color-destructive-hover)]",
         "disabled:bg-[var(--color-border)] disabled:border-[var(--color-border)] disabled:text-[var(--color-text-muted)]",
+    ].join(" "),
+
+    "destructive-outline": [
+        "bg-[var(--color-surface)] text-[var(--color-destructive)]",
+        "border border-[var(--color-destructive)]",
+        "hover:bg-[var(--color-destructive-subtle)] hover:border-[var(--color-destructive-hover)]",
+        "active:bg-[var(--color-destructive-subtle)]",
+        "disabled:text-[var(--color-text-muted)] disabled:border-[var(--color-border)]",
     ].join(" "),
 };
 

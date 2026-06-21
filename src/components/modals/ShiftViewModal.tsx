@@ -230,12 +230,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function InfoCell({ icon, label, value }: { icon: React.ReactNode; label: string; value: string; }) {
   return (
-    <div className="flex flex-col items-start gap-1 flex-1 min-w-0">
+    <div className="flex flex-col items-end gap-1 flex-1 min-w-0">
       <div className="flex items-center gap-1 text-text-muted">
         {icon}
         <span className="text-[11px]">{label}</span>
       </div>
-      <span className="text-[13px] font-semibold text-text-primary truncate w-full text-right" dir="ltr">
+      <span className="text-[13px] font-semibold text-text-primary truncate w-full">
         {value}
       </span>
     </div>
@@ -268,59 +268,59 @@ export default function ShiftViewModal({ isOpen, onClose, shift }: ShiftViewModa
       />
 
       <Modal.Body>
-        <div className="flex flex-col gap-2">
-          <SectionLabel>נותן שירות</SectionLabel>
-          <div className="flex items-center justify-between bg-brand-subtle border border-brand-border rounded-xl p-2.5">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="bg-brand text-text-inverse p-1.5 rounded-lg flex-shrink-0">
-                <IconDoctor />
-              </div>
-              <span className="text-[15px] font-bold text-brand truncate">
-                {shift.ServiceResourceId ? `מזהה: ${shift.ServiceResourceId}` : "לא צוין"}
-              </span>
+        <SectionLabel>נותן שירות</SectionLabel>
+        <div className="flex items-center justify-between bg-brand-subtle border border-brand-border rounded-xl p-2.5">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="bg-brand text-text-inverse p-1.5 rounded-lg flex-shrink-0">
+              <IconDoctor />
             </div>
+            <span className="text-[15px] font-bold text-brand truncate">
+              {shift.ServiceResourceId ? `מזהה: ${shift.ServiceResourceId}` : "לא צוין"}
+            </span>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3">
-          <SectionLabel>פרטי טיפול</SectionLabel>
-          <div className="flex items-center">
-            <InfoCell icon={<IconRoom />} label="חדר" value={shift.ServiceTerritoryId ? `מזהה: ${shift.ServiceTerritoryId}` : "לא צוין"} />
-            <CellDivider />
-            <InfoCell icon={<IconClinic />} label="מרפאה" value="—" />
-          </div>
-          <div className="flex items-center">
-            <InfoCell icon={<IconClock />} label="סיום" value={formatTime(shift.EndTime)} />
-            <CellDivider />
-            <InfoCell icon={<IconClock />} label="התחלה" value={formatTime(shift.StartTime)} />
-            <CellDivider />
-            <InfoCell icon={<IconCalendar />} label="תאריך" value={formatDate(shift.StartTime)} />
-          </div>
+        <SectionLabel>פרטי טיפול</SectionLabel>
+        <div className="flex items-center">
+          <InfoCell icon={<IconClinic />} label="מרפאה" value="—" />
+          <CellDivider />
+          <InfoCell icon={<IconRoom />} label="חדר" value={shift.ServiceTerritoryId ? `מזהה: ${shift.ServiceTerritoryId}` : "לא צוין"} />
+        </div>
+        <div className="flex items-center">
+          <InfoCell icon={<IconCalendar />} label="תאריך" value={formatDate(shift.StartTime)} />
+          <CellDivider />
+          <InfoCell icon={<IconClock />} label="התחלה" value={formatTime(shift.StartTime)} />
+          <CellDivider />
+          <InfoCell icon={<IconClock />} label="סיום" value={formatTime(shift.EndTime)} />
         </div>
 
-        <div className="flex items-center gap-1.5 text-[11px] text-text-muted mt-2">
+        <div className="flex items-center gap-2 text-[11px] text-text-muted">
           <IconTreatment />
-          <span>סוגי טיפול במשמרת:</span>
-          <span className="font-semibold text-text-primary">{shift.Type ?? "זימון תורים"}</span>
+          <div className="flex flex-col gap-0.5">
+            <span>סוגי טיפול במשמרת:</span>
+            <span className="font-semibold text-text-primary text-[13px]">{shift.Type ?? "זימון תורים"}</span>
+          </div>
         </div>
       </Modal.Body>
 
-      <Modal.Footer>
-        <Button
-          variant="destructive"
-          size="sm"
-          icon={<IconTrash />}
-          onClick={() => console.log("Delete clicked", shift.Id)}
-        >
-          מחיקת משמרת
-        </Button>
+      <Modal.Footer className="justify-between">
         <Button
           variant="primary"
           size="sm"
+          className="rounded-full"
           icon={<IconEdit />}
           onClick={() => console.log("Edit clicked", shift.Id)}
         >
           עריכת משמרת
+        </Button>
+        <Button
+          variant="destructive-outline"
+          size="sm"
+          className="rounded-full"
+          icon={<IconTrash />}
+          onClick={() => console.log("Delete clicked", shift.Id)}
+        >
+          מחיקת משמרת
         </Button>
       </Modal.Footer>
     </Modal>
