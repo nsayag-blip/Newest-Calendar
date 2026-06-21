@@ -227,16 +227,14 @@ const GridBlock = memo(({ block }: { block: RenderableBlock<any> }) => {
   const { bgColor, borderColor } = block.display;
   const isShift = block.itemType === "shift";
 
-  // 1. Grab the generic openModal function from the store
   const openModal = useCalendarStore((state) => state.openModal);
 
-  // 2. Handle the click securely
   const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Stops grid column drag from accidentally triggering
+    e.stopPropagation();
     if (isShift) {
-      openModal("shiftView", block.payload);
+      openModal({ type: "shiftView", payload: block.payload });
     } else {
-      openModal("appointmentView", block.payload);
+      openModal({ type: "appointmentView", payload: block.payload });
     }
   };
 

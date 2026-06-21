@@ -97,16 +97,10 @@
 
 
 // src/components/modals/ShiftDraftModal.tsx
-import { memo } from "react";
 import { Modal } from "../ui/Modal";
-
-export interface DraftPayload {
-  columnId: string;
-  columnName: string;
-  startMinutes: number;
-  endMinutes: number;
-  type: "shift" | "appointment";
-}
+import { Button } from "../ui/Button";
+import { IconClockLg, IconSave } from "../ui/Icons";
+import type { DraftPayload } from "../../types/calendar";
 
 interface ShiftDraftModalProps {
   isOpen: boolean;
@@ -120,10 +114,7 @@ const formatMins = (mins: number) => {
   return `${h}:${m}`;
 };
 
-const IconClock = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-const IconSave = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>;
-
-const ShiftDraftModal = memo(({ isOpen, onClose, payload }: ShiftDraftModalProps) => {
+export default function ShiftDraftModal({ isOpen, onClose, payload }: ShiftDraftModalProps) {
   if (!payload) return null;
 
   return (
@@ -138,7 +129,7 @@ const ShiftDraftModal = memo(({ isOpen, onClose, payload }: ShiftDraftModalProps
         <div className="flex items-center justify-between bg-brand-subtle border border-brand-border rounded-xl p-2.5">
           <div className="flex items-center gap-3 min-w-0">
             <div className="bg-brand text-text-inverse p-1.5 rounded-lg flex-shrink-0">
-              <IconClock />
+              <IconClockLg />
             </div>
             <div className="flex flex-col items-start">
               <span className="text-[15px] font-bold text-brand truncate">{payload.columnName}</span>
@@ -181,16 +172,18 @@ const ShiftDraftModal = memo(({ isOpen, onClose, payload }: ShiftDraftModalProps
       </Modal.Body>
 
       <Modal.Footer>
-        <button onClick={onClose} className="px-3 py-1.5 text-xs font-bold text-text-secondary hover:text-text-primary transition-colors">
+        <Button variant="ghost" size="sm" onClick={onClose}>
           ביטול
-        </button>
-        <button onClick={() => { alert("Save functionality coming soon!"); onClose(); }} className="flex items-center gap-1.5 px-5 py-1.5 bg-brand text-text-inverse rounded-full font-bold text-xs hover:bg-brand-hover transition-colors shadow-sm">
-          <IconSave />
+        </Button>
+        <Button
+          variant="primary"
+          size="sm"
+          icon={<IconSave />}
+          onClick={() => { alert("Save functionality coming soon!"); onClose(); }}
+        >
           שמירת משמרת
-        </button>
+        </Button>
       </Modal.Footer>
     </Modal>
   );
-});
-
-export default ShiftDraftModal;
+}

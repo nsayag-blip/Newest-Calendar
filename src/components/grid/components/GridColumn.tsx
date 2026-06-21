@@ -464,11 +464,10 @@ const GridColumn = memo(({ column, blocks, config }: Props) => {
         type: appMode,
       };
 
-      // 2. Dispatch data to the global store using our NEW modal system!
       if (appMode === "shift") {
-        openModal("draftShift", draftPayload);
+        openModal({ type: "draftShift", payload: draftPayload });
       } else {
-        openModal("draftAppointment", draftPayload);
+        openModal({ type: "draftAppointment", payload: draftPayload });
       }
       
       // Reset the drag state after releasing

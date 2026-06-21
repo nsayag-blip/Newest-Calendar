@@ -2,26 +2,18 @@
 import { useCalendarStore } from "../../store/appStore";
 import ShiftViewModal from "./ShiftViewModal";
 import ShiftDraftModal from "./ShiftDraftModal";
-// import AppointmentDraftModal from "./AppointmentDraftModal";
 
 export default function GlobalModalManager() {
-  const { activeModal, modalPayload, closeModal } = useCalendarStore();
+  const { modal, closeModal } = useCalendarStore();
 
-  if (!activeModal) return null;
+  if (modal.type === null) return null;
 
-  return (
-    <>
-      {activeModal === "shiftView" && (
-        <ShiftViewModal isOpen={true} shift={modalPayload} onClose={closeModal} />
-      )}
-      
-      {activeModal === "draftShift" && (
-        <ShiftDraftModal isOpen={true} payload={modalPayload} onClose={closeModal} />
-      )}
-
-      {/* {activeModal === "draftAppointment" && (
-        <AppointmentDraftModal isOpen={true} payload={modalPayload} onClose={closeModal} />
-      )} */}
-    </>
-  );
+  switch (modal.type) {
+    case "shiftView":
+      return <ShiftViewModal isOpen shift={modal.payload} onClose={closeModal} />;
+    case "draftShift":
+      return <ShiftDraftModal isOpen payload={modal.payload} onClose={closeModal} />;
+    default:
+      return null;
+  }
 }
