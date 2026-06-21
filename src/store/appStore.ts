@@ -7,7 +7,6 @@ import type {
   TimeDensity,
   ColumnDensity,
   FilterState,
-  DraftPayload,
 } from "../types/calendar";
 import {
   TIME_DENSITY_DEFAULT,
@@ -67,10 +66,11 @@ interface CalendarState {
   toggleShiftStatusFilter: (status: string) => void;
   clearFilters: () => void;
 
-  // ── Draft Modal State ──
-  draftPayload: DraftPayload | null;
-  openDraftModal: (payload: DraftPayload) => void;
-  closeDraftModal: () => void;
+  // modal state
+  activeModal: ModalType;
+  modalPayload: any;
+  openModal: (type: ModalType, payload?: any) => void;
+  closeModal: () => void;
 }
 
 const EMPTY_FILTERS: FilterState = {
@@ -78,6 +78,13 @@ const EMPTY_FILTERS: FilterState = {
   workTypeIds: [],
   shiftStatuses: [],
 };
+
+export type ModalType =
+  | "shiftView"
+  | "appointmentView"
+  | "draftShift"
+  | "draftAppointment"
+  | null;
 
 // ── Store ─────────────────────────────────────────────────
 
@@ -161,7 +168,9 @@ export const useCalendarStore = create<CalendarState>((set) => ({
 
   clearFilters: () => set({ filters: EMPTY_FILTERS, viewType: "day" }),
 
-  draftPayload: null,
-  openDraftModal: (payload) => set({ draftPayload: payload }),
-  closeDraftModal: () => set({ draftPayload: null }),
+  activeModal: null,
+  modalPayload: null,
+  openModal: (type, payload = null) =>
+    set({ activeModal: type, modalPayload: payload }),
+  closeModal: () => set({ activeModal: null, modalPayload: null }),
 }));

@@ -106,6 +106,16 @@ export const LABEL_DEFAULTS = {
   CAL_ERR_LOAD_DATA: "אירעה שגיאה בטעינת הנתונים. אנא רענן את העמוד.",
   CAL_ERR_GENERIC: "אירעה שגיאה. אנא נסה שוב.",
   CAL_ERR_SERVER: "אירעה שגיאה בשרת.",
+
+
+
+  // Modal titles
+  CAL_MODAL_CREATE_SHIFT: "יצירת משמרת חדשה",
+  CAL_MODAL_EDIT_SHIFT: "עריכת משמרת",
+  CAL_MODAL_CREATE_APPT: "קביעת תור חדש",
+  CAL_MODAL_EDIT_APPT: "עריכת תור",
+  CAL_MODAL_CANCEL: "ביטול",
+  CAL_MODAL_SAVE: "שמירה",
 } as const;
 
 // The set of valid label keys.

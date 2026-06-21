@@ -11,6 +11,8 @@ export const SHIFT_STATUS_BG: Record<ShiftStatus, string> = {
   Tentative: "#FFFDE7",  // yellow tint — not yet confirmed
 };
 
+
+
 export const SHIFT_STATUS_BORDER: Record<ShiftStatus, string> = {
   Published: "#0070D2",  // brand blue
   Confirmed: "#2E7D32",  // green
@@ -23,6 +25,8 @@ export const SHIFT_STATUS_LABEL_KEY: Record<ShiftStatus, LabelKey> = {
   Confirmed: "CAL_SHIFT_STATUS_CONFIRMED",
   Tentative: "CAL_SHIFT_STATUS_TENTATIVE",
 };
+
+
 
 // ── Appointment calendar — shift background colors ────────
 // (Used to color the shift lane behind appointments)

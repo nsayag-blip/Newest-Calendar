@@ -6,7 +6,7 @@ import DayCanvas from "./components/grid/components/DayCanvas";
 import RangeCanvas from "./components/grid/components/RangeCanvas";
 import HorizontalCanvas from "./components/grid/components/HorizontalCanvas";
 import { GRID_CONFIG } from "./constants/config";
-import CreateShiftModal from "./components/modals/CreateShiftModal";
+import GlobalModalManager from "./components/modals/GlobalModalManager";
 
 function CalendarApp() {
   const { isFetching, activeClinicId, viewType, columns, groups, blocks } =
@@ -40,7 +40,6 @@ function CalendarApp() {
 
   return (
     <div className="w-screen h-screen bg-gray-50 flex flex-col font-sans overflow-hidden">
-      <CreateShiftModal />
       <HeaderLayout />
 
       <main className="flex-1 overflow-hidden bg-white relative">
@@ -54,6 +53,9 @@ function CalendarApp() {
         )}
 
         {renderCanvas()}
+
+
+        <GlobalModalManager />
       </main>
     </div>
   );

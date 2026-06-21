@@ -272,13 +272,13 @@ export default function FilterTray() {
   const staffOptions = useMemo(
     () =>
       resources.map((r) => {
-        const type = r.ResourceType?.toLowerCase() ?? "";
-        let prefix: string = labels.CAL_RESOURCE_PREFIX_DOCTOR;
-        if (type.includes("specialist") || type.includes("מומחה"))
-          prefix = labels.CAL_RESOURCE_PREFIX_SPECIALIST;
-        else if (type.includes("hygienist") || type.includes("שיננית"))
-          prefix = labels.CAL_RESOURCE_PREFIX_HYGIENIST;
-        return { id: r.Id, label: `${prefix} ${decodeHtml(r.Name)}` };
+        //const type = r.ResourceType?.toLowerCase() ?? "";
+        // let prefix: string = labels.CAL_RESOURCE_PREFIX_DOCTOR;
+        // if (type.includes("specialist") || type.includes("מומחה"))
+        //   prefix = labels.CAL_RESOURCE_PREFIX_SPECIALIST;
+        // else if (type.includes("hygienist") || type.includes("שיננית"))
+        //   prefix = labels.CAL_RESOURCE_PREFIX_HYGIENIST;
+        return { id: r.Id, label: `${decodeHtml(r.Name)}` };
       }),
     [resources, labels],
   );
