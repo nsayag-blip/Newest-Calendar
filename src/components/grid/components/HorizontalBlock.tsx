@@ -45,7 +45,7 @@ const HorizontalBlock = memo(({ block }: Props) => {
         borderBottom: `1px solid ${borderColor}`,
         borderLeft: `1px solid ${borderColor}`,
         borderRight: `1px solid ${borderColor}`,
-        color: textColor ?? "#1f2937",
+        color: textColor ?? "var(--color-text-primary)",
       }}
     >
       <div className="text-xs font-bold truncate leading-none mb-0.5">

@@ -63,7 +63,7 @@ const HorizontalRow = memo(({ column, blocks, config }: Props) => {
     if (dragStartMinutes !== null && hoveredMinutes !== null) {
       const start = Math.min(dragStartMinutes, hoveredMinutes);
       const end = Math.max(dragStartMinutes, hoveredMinutes) + timeDensity;
-      console.log("Ghost Block Drag-Created (Horizontal):", { columnId: column.id, start, end });
+      // TODO: wire to openModal for horizontal view draft creation
       setDragStartMinutes(null);
     }
   }, [dragStartMinutes, hoveredMinutes, timeDensity, column.id]);
