@@ -230,12 +230,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function InfoCell({ icon, label, value }: { icon: React.ReactNode; label: string; value: string; }) {
   return (
-    <div className="flex flex-col items-end gap-1 flex-1 min-w-0">
+    <div className="flex flex-col items-start gap-1 flex-1 min-w-0">
       <div className="flex items-center gap-1 text-text-muted">
         {icon}
         <span className="text-[11px]">{label}</span>
       </div>
-      <span className="text-[13px] font-semibold text-text-primary truncate w-full">
+      <span className="text-[13px] font-semibold text-text-primary truncate w-full text-right" dir="ltr">
         {value}
       </span>
     </div>
@@ -282,9 +282,9 @@ export default function ShiftViewModal({ isOpen, onClose, shift }: ShiftViewModa
 
         <SectionLabel>פרטי טיפול</SectionLabel>
         <div className="flex items-center">
-          <InfoCell icon={<IconClinic />} label="מרפאה" value="—" />
-          <CellDivider />
           <InfoCell icon={<IconRoom />} label="חדר" value={shift.ServiceTerritoryId ? `מזהה: ${shift.ServiceTerritoryId}` : "לא צוין"} />
+          <CellDivider />
+          <InfoCell icon={<IconClinic />} label="מרפאה" value="—" />
         </div>
         <div className="flex items-center">
           <InfoCell icon={<IconCalendar />} label="תאריך" value={formatDate(shift.StartTime)} />
@@ -303,16 +303,7 @@ export default function ShiftViewModal({ isOpen, onClose, shift }: ShiftViewModa
         </div>
       </Modal.Body>
 
-      <Modal.Footer className="justify-between">
-        <Button
-          variant="primary"
-          size="sm"
-          className="rounded-full"
-          icon={<IconEdit />}
-          onClick={() => console.log("Edit clicked", shift.Id)}
-        >
-          עריכת משמרת
-        </Button>
+      <Modal.Footer className="!justify-between">
         <Button
           variant="destructive-outline"
           size="sm"
@@ -321,6 +312,15 @@ export default function ShiftViewModal({ isOpen, onClose, shift }: ShiftViewModa
           onClick={() => console.log("Delete clicked", shift.Id)}
         >
           מחיקת משמרת
+        </Button>
+        <Button
+          variant="primary"
+          size="sm"
+          className="rounded-full"
+          icon={<IconEdit />}
+          onClick={() => console.log("Edit clicked", shift.Id)}
+        >
+          עריכת משמרת
         </Button>
       </Modal.Footer>
     </Modal>
